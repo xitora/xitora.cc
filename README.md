@@ -22,6 +22,6 @@ npm run dev
 
 ## 배포
 
-GitHub `xitora/xitora.cc`와 Vercel을 연결합니다. `main` 푸시는 운영 배포, 다른 브랜치 푸시는 Preview 배포를 생성합니다.
+GitHub `xitora/xitora.cc`는 Vercel `x1t0ra/xitora-cc`에 연결되어 있습니다. `main` 푸시는 운영 배포, 다른 브랜치 푸시는 Preview 배포를 생성합니다.
 
 Vercel 설정은 `vercel.json`에 있습니다. 빌드 후 경로별 공유 미리보기 메타 태그를 생성하고, 나머지 경로는 SPA 진입점으로 연결합니다. 별도 환경변수는 필요하지 않습니다.
