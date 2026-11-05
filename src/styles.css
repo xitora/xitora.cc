@@ -196,7 +196,7 @@ button:not(:disabled):hover {
 
 .bento-about {
   grid-column: span 3;
-  grid-row: span 3;
+  grid-row: span 4;
 }
 
 .bento-about p {
@@ -208,6 +208,8 @@ button:not(:disabled):hover {
   justify-content: space-between;
 }
 
+.bento-nav--projects { font: inherit; text-align: left; }
+
 .bento-nav h3 { margin: 0 0 8px; font-size: 1.3rem; }
 .bento-nav p { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
 .bento-nav-icon { color: var(--accent); }
@@ -215,6 +217,7 @@ button:not(:disabled):hover {
 .bento-nav--settings .bento-nav-icon { color: var(--accent); }
 .bento-nav--contact .bento-nav-icon { color: var(--accent); }
 .bento-arrow { position: absolute; top: 24px; right: 24px; color: var(--text-muted); transition: 0.3s; }
+.bento-nav--projects:hover .bento-arrow,
 .bento-nav--tools:hover .bento-arrow,
 .bento-nav--settings:hover .bento-arrow,
 .bento-nav--contact:hover .bento-arrow,
@@ -222,6 +225,7 @@ button:not(:disabled):hover {
 
 .bento-recent-posts .bento-header { color: #fff; }
 .bento-recent-posts:hover { border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.03); }
+.bento-nav--projects:hover,
 .bento-nav--tools:hover { border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.03); }
 .bento-nav--settings:hover { border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.03); }
 .bento-nav--contact:hover { border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.03); }
@@ -408,7 +412,6 @@ button:not(:disabled):hover {
 
   .bento-about { grid-column: 1 / -1; grid-row: auto; }
   .bento-nav { grid-column: span 1; grid-row: auto; }
-  .bento-nav--contact { grid-column: 1 / -1; }
   .bento-image { grid-column: 1 / -1; grid-row: span 1; aspect-ratio: 2/1; }
   .bento-gear { grid-column: 1 / -1; grid-row: auto; }
   .settings-list-grid { grid-template-columns: 1fr; }

@@ -39,11 +39,11 @@
   height: auto;
   filter: blur(3px);
   transform-origin: left center;
-  transform: translateY(-50%) skewX(-8deg) skewY(-12deg);
+  transform: translateY(-50%) skewX(-18deg) skewY(-24deg) scale(var(--project-image-scale));
 }
 
-.project-card--royalsg { --project-accent: #a8c7fa; }
-.project-card--chunitora { --project-accent: #facc15; }
+.project-card--royalsg { --project-accent: #b394da; --project-image-scale: 0.78; }
+.project-card--chunitora { --project-accent: #facc15; --project-image-scale: 1.15; }
 .project-card__category { color: var(--project-accent); font-size: 0.8rem; }
 .project-card h2 { margin: 16px 0 24px; font-size: clamp(1.6rem, 3vw, 2rem); letter-spacing: -0.04em; }
 .project-card__visit { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 8px; padding-block: 8px; font-size: 0.9rem; }

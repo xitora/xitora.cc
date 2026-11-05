@@ -299,6 +299,17 @@ function HomePage({ onNavigate }: { onNavigate: Navigate }) {
           <div className="bento-arrow"><ArrowUpRight size={24} /></div>
         </motion.div>
 
+        <motion.button type="button" className="bento-box bento-nav bento-nav--projects" variants={fadeUp} onClick={() => onNavigate('/projects')}>
+          <div className="bento-header">
+            <FolderOpen size={20} />
+            <span>프로젝트</span>
+          </div>
+          <div style={{ marginTop: 'auto' }}>
+            <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.95rem' }}>로얄상구 대여 예약, 츄니토라</p>
+          </div>
+          <div className="bento-arrow"><ArrowUpRight size={24} /></div>
+        </motion.button>
+
         {/* 도구 */}
         <motion.div className="bento-box bento-nav bento-nav--tools" variants={fadeUp} onClick={() => onNavigate('/tools')} style={{ cursor: 'pointer' }}>
           <div className="bento-header">
