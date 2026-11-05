@@ -32,18 +32,16 @@
 
 .project-card__backdrop img {
   position: absolute;
-  top: 50%;
-  left: -60px;
-  width: max(100%, 860px);
-  max-width: none;
-  height: auto;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
   filter: blur(3px);
-  transform-origin: left center;
-  transform: translateY(-50%) skewX(-18deg) skewY(-24deg) scale(var(--project-image-scale));
 }
 
-.project-card--royalsg { --project-accent: #b394da; --project-image-scale: 0.78; }
-.project-card--chunitora { --project-accent: #facc15; --project-image-scale: 1.15; }
+.project-card--royalsg { --project-accent: #b394da; }
+.project-card--chunitora { --project-accent: #facc15; }
 .project-card__category { color: var(--project-accent); font-size: 0.8rem; }
 .project-card h2 { margin: 16px 0 24px; font-size: clamp(1.6rem, 3vw, 2rem); letter-spacing: -0.04em; }
 .project-card__visit { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 8px; padding-block: 8px; font-size: 0.9rem; }

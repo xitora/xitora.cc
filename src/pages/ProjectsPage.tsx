@@ -5,7 +5,7 @@ import "./projects.css";
 const projects = [
   {
     id: "royalsg",
-    image: "/assets/project-royalsg.png",
+    image: "/assets/project-royalsg.jpg",
     name: "로얄상구 대여 예약",
     category: "예약 서비스",
     url: "https://royalsg.xitora.cc/",
@@ -21,7 +21,7 @@ const projects = [
   },
   {
     id: "chunitora",
-    image: "/assets/project-chunitora.png",
+    image: "/assets/project-chunitora.jpg",
     name: "츄니토라",
     category: "게임 커뮤니티",
     url: "https://chuni.xitora.cc/",
