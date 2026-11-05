@@ -1,10 +1,9 @@
-.projects-page {
-  width: min(100%, 1200px);
-  margin: 0 auto;
-  padding: 48px var(--space) 120px;
+@media (min-width: 1024px) {
+  .projects-page .post-detail-container { grid-column: 2; }
 }
 
-.projects-heading { margin: 40px 0; }
+.projects-page .back-btn { margin-bottom: 24px; }
+.projects-heading { margin: 0 0 40px; }
 .projects-heading h1 { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 2.5rem; letter-spacing: -0.04em; }
 .projects-heading p { margin: 16px 0 0; color: var(--text-muted); }
 .projects-list { display: grid; gap: 24px; }
@@ -34,12 +33,10 @@
 .project-card__stack li { padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.75rem; }
 .project-card__note { margin: 20px 0 0; color: var(--text-muted); font-size: 0.8rem; line-height: 1.6; }
 
-@media (max-width: 760px) {
+@media (max-width: 1200px) {
   .project-card { grid-template-columns: minmax(0, 1fr); gap: 24px; }
 }
 
 @media (max-width: 640px) {
-  .projects-page { padding-top: 24px; }
-  .projects-heading { margin: 32px 0; }
   .projects-heading h1 { font-size: 2rem; }
 }

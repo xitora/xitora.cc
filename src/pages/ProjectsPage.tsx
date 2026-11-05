@@ -38,42 +38,44 @@ const projects = [
 export default function ProjectsPage({ onNavigate }: { onNavigate: (path: string) => void }) {
   return (
     <motion.main
-      className="projects-page"
+      className="page-layout post-detail-layout projects-page"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <button className="back-btn" onClick={() => onNavigate("/")}>
-        <ChevronLeft size={20} aria-hidden="true" /> 메인으로
-      </button>
-      <header className="projects-heading">
-        <h1><FolderOpen size={32} aria-hidden="true" /> 프로젝트</h1>
-        <p>직접 만들고 운영하는 웹사이트입니다.</p>
-      </header>
-      <div className="projects-list">
-        {projects.map((project, index) => (
-          <article className={`project-card project-card--${project.id}`} key={project.id}>
-            <div className="project-card__identity">
-              <span className="project-card__category">0{index + 1} / {project.category}</span>
-              <h2>{project.name}</h2>
-              <a className="project-card__visit" href={project.url} target="_blank" rel="noreferrer">
-                사이트 방문 <ArrowUpRight size={18} aria-hidden="true" />
-                <span className="project-card__domain">{project.domain}</span>
-              </a>
-            </div>
-            <div className="project-card__body">
-              <p className="project-card__description">{project.description}</p>
-              <ul className="project-card__features">
-                {project.features.map((feature) => <li key={feature}>{feature}</li>)}
-              </ul>
-              <ul className="project-card__stack" aria-label={`${project.name} 사용 기술`}>
-                {project.stack.map((tech) => <li key={tech}>{tech}</li>)}
-              </ul>
-              <p className="project-card__note">{project.note}</p>
-            </div>
-          </article>
-        ))}
+      <div className="post-detail-container">
+        <button className="back-btn" onClick={() => onNavigate("/")}>
+          <ChevronLeft size={20} aria-hidden="true" /> 메인으로
+        </button>
+        <header className="projects-heading">
+          <h1><FolderOpen size={32} aria-hidden="true" /> 프로젝트</h1>
+          <p>직접 만들고 운영하는 웹사이트입니다.</p>
+        </header>
+        <div className="projects-list">
+          {projects.map((project, index) => (
+            <article className={`project-card project-card--${project.id}`} key={project.id}>
+              <div className="project-card__identity">
+                <span className="project-card__category">0{index + 1} / {project.category}</span>
+                <h2>{project.name}</h2>
+                <a className="project-card__visit" href={project.url} target="_blank" rel="noreferrer">
+                  사이트 방문 <ArrowUpRight size={18} aria-hidden="true" />
+                  <span className="project-card__domain">{project.domain}</span>
+                </a>
+              </div>
+              <div className="project-card__body">
+                <p className="project-card__description">{project.description}</p>
+                <ul className="project-card__features">
+                  {project.features.map((feature) => <li key={feature}>{feature}</li>)}
+                </ul>
+                <ul className="project-card__stack" aria-label={`${project.name} 사용 기술`}>
+                  {project.stack.map((tech) => <li key={tech}>{tech}</li>)}
+                </ul>
+                <p className="project-card__note">{project.note}</p>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </motion.main>
   );
