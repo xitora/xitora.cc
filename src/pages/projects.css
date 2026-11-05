@@ -1,0 +1,45 @@
+.projects-page {
+  width: min(100%, 1200px);
+  margin: 0 auto;
+  padding: 48px var(--space) 120px;
+}
+
+.projects-heading { margin: 40px 0; }
+.projects-heading h1 { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 2.5rem; letter-spacing: -0.04em; }
+.projects-heading p { margin: 16px 0 0; color: var(--text-muted); }
+.projects-list { display: grid; gap: 24px; }
+
+.project-card {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.2fr);
+  gap: 40px;
+  padding: clamp(24px, 4vw, 40px);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--bg-card);
+}
+
+.project-card--royalsg { --project-accent: #a8c7fa; }
+.project-card--chunitora { --project-accent: #facc15; }
+.project-card__category { color: var(--project-accent); font-size: 0.8rem; }
+.project-card h2 { margin: 16px 0 24px; font-size: clamp(1.6rem, 3vw, 2rem); letter-spacing: -0.04em; }
+.project-card__visit { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 8px; padding-block: 8px; font-size: 0.9rem; }
+.project-card__visit:hover { color: var(--project-accent); }
+.project-card__visit:focus-visible { outline: 2px solid var(--project-accent); outline-offset: 4px; border-radius: 4px; }
+.project-card__domain { flex-basis: 100%; color: var(--text-muted); font-size: 0.8rem; }
+.project-card__description { margin: 0; font-size: 1.05rem; line-height: 1.8; }
+.project-card__features { margin: 20px 0 24px; padding-left: 20px; color: var(--text-muted); font-size: 0.9rem; line-height: 1.8; }
+.project-card__features li + li { margin-top: 8px; }
+.project-card__stack { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.project-card__stack li { padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.75rem; }
+.project-card__note { margin: 20px 0 0; color: var(--text-muted); font-size: 0.8rem; line-height: 1.6; }
+
+@media (max-width: 760px) {
+  .project-card { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+}
+
+@media (max-width: 640px) {
+  .projects-page { padding-top: 24px; }
+  .projects-heading { margin: 32px 0; }
+  .projects-heading h1 { font-size: 2rem; }
+}

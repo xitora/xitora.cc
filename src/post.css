@@ -1,0 +1,1258 @@
+/* ==========================
+   Post List Page
+   ========================== */
+.post-list-layout {
+  width: min(100%, 1200px);
+  margin: 0 auto;
+  padding: 80px var(--space) 120px;
+}
+
+.post-list-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.post-list-header h1 {
+  font-size: 3rem;
+  margin: 16px 0 8px;
+  letter-spacing: -0.04em;
+}
+
+.post-list-header p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.back-btn:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.post-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.category-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.category-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 0.9rem;
+}
+.category-btn:hover, .category-btn.active {
+  background: var(--text-main);
+  color: #000;
+  border-color: var(--text-main);
+}
+
+.search-box {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+.search-box .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.search-box input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-main);
+  padding: 10px 16px 10px 40px;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-box input:focus {
+  border-color: var(--text-muted);
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.post-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s, border-color 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+.post-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
+}
+
+.post-card-banner {
+  position: relative;
+  aspect-ratio: 16/9;
+  width: 100%;
+  overflow: hidden;
+}
+
+.post-card-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+.post-card:hover .post-card-banner img {
+  transform: scale(1.05);
+}
+
+.post-card-category {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fff;
+}
+
+.post-card-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.post-card-content h2 {
+  margin: 0 0 12px;
+  font-size: 1.3rem;
+  line-height: 1.4;
+}
+
+.post-card-date {
+  margin-top: auto;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.no-posts {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px dashed var(--border);
+}
+
+/* ==========================
+   Post List Page (DCInside style)
+   ========================== */
+.post-list-header-compact {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 12px;
+}
+.post-list-header-compact h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  line-height: 1;
+}
+
+.post-list-table {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  
+
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.post-list-table-header {
+  display: flex;
+  padding: 16px 20px;
+  background: transparent;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.post-list-row {
+  display: flex;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s;
+  align-items: center;
+}
+.post-list-row:last-child {
+  border-bottom: none;
+}
+.post-list-row:hover {
+  background: var(--bg-card-hover);
+}
+
+.col-cat {
+  width: 100px;
+  flex-shrink: 0;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.col-title {
+  flex-grow: 1;
+  font-size: 1rem;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 16px;
+}
+
+.col-date {
+  width: 100px;
+  flex-shrink: 0;
+  text-align: right;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.post-detail-card {
+  position: relative;
+  border-radius: 20px;
+  padding: 48px;
+}
+
+.post-detail-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(0, 0, 0, 0.5);
+  
+
+  z-index: -1;
+  pointer-events: none;
+}
+
+
+/* ==========================
+   Post Detail Page & Markdown
+   ========================== */
+.post-detail-layout {
+  width: min(100%, 800px);
+  margin: 0 auto;
+  padding: 60px var(--space) 120px;
+}
+
+@media (min-width: 1024px) {
+  .post-detail-layout {
+    width: min(100%, 1400px);
+    display: grid;
+    /* 데스크톱 본문(중앙 컬럼)이 화면 정중앙(50vw)에 안착하도록 좌우 사이드바 폭을 220px로 동일하게 대칭 일원화 */
+    grid-template-columns: 220px minmax(0, 800px) 220px;
+    justify-content: center;
+    gap: 40px;
+  }
+}
+
+.post-sidebar {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .post-sidebar {
+    display: block;
+  }
+}
+
+.sidebar-sticky {
+  position: sticky;
+  top: calc(var(--nav-h) + 40px);
+  max-height: calc(100vh - var(--nav-h) - 80px);
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+.sidebar-sticky::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-sticky::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-sticky::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.sidebar-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.category-list, .toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.category-list li button, .toc-list li a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  font-family: inherit;
+}
+.category-list li.active button, .toc-list li.active a {
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  font-weight: 600;
+}
+.category-list li button:hover, .toc-list li a:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.16) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+}
+
+.cat-count {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.toc-item.toc-level-2 a { padding-left: 24px; }
+.toc-item.toc-level-3 a { padding-left: 36px; font-size: 0.85rem; }
+.toc-item.toc-level-4 a { padding-left: 48px; font-size: 0.8rem; }
+
+.no-toc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  padding: 12px;
+}
+
+.post-detail-header {
+  margin: 0 0 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.post-category-label {
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.post-title {
+  font-size: clamp(2.3rem, 3vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 16px;
+  letter-spacing: -0.03em;
+}
+
+.post-date {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+/* Post Content Styles (Rich Text Formatting) */
+.post-content {
+  color: var(--text-main);
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.post-content h1, 
+.post-content h2, 
+.post-content h3, 
+.post-content h4 {
+  margin: 2em 0 1em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  scroll-margin-top: calc(var(--nav-h) + 20px);
+}
+.post-content h1 { font-size: 2.2rem; }
+.post-content h2 { font-size: 1.8rem; }
+.post-content h3 { font-size: 1.4rem; }
+.post-content h4 { font-size: 1.2rem; }
+
+.post-content p {
+  margin: 0 0 1.5em;
+}
+
+.post-content strong { font-weight: 700; color: #fff; }
+.post-content em { font-style: italic; color: var(--accent-2); }
+.post-content del { text-decoration: line-through; opacity: 0.6; }
+
+/* Hyperlink with bold, underline, and gradient */
+/* 기본 a 태그 fallback 및 하위 호환성 유지 */
+.post-content a:not(.post-widget),
+a.text-link {
+  font-weight: 700;
+  color: #0395FC;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: #0395FC;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+  transition: filter 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+/* 내부 구조가 없는 일반 링크에 그라데이션 적용 */
+.post-content a:not(.post-widget):not(.post-inline-link),
+a.text-link:not(.post-inline-link) {
+  background: linear-gradient(90deg, #014AFF 0%, #0395FC 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.post-content a:not(.post-widget):not(.post-inline-link):hover,
+a.text-link:not(.post-inline-link):hover {
+  text-decoration-color: #014AFF;
+  filter: brightness(1.2);
+}
+
+/* 신규 인라인 하이퍼링크 (.post-inline-link) */
+.post-content a.post-inline-link {
+  display: inline;
+  text-decoration: none; /* 부모 밑줄을 제거하여 아이콘 아래로 번지지 않도록 방지 */
+}
+
+/* 텍스트 영역: 그라데이션 및 밑줄 */
+.post-content .post-inline-link__text {
+  font-weight: 700;
+  background: linear-gradient(90deg, #014AFF 0%, #0395FC 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #0395FC;
+  text-decoration: underline;
+  text-decoration-color: #0395FC;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+  transition: filter 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+/* 우측 ExternalLink 아이콘: 하이퍼링크와 동일한 색상 (#0395FC) */
+.post-content .post-inline-link__icon {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: -0.1em;
+  margin-left: 3px;
+  color: #0395FC;
+  stroke: #0395FC;
+  text-decoration: none;
+  -webkit-text-fill-color: initial;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.post-content .post-inline-link__icon svg {
+  display: inline-block;
+  color: inherit;
+  stroke: currentColor;
+}
+
+/* 호버 시 상호작용 효과 */
+.post-content a.post-inline-link:hover .post-inline-link__text {
+  text-decoration-color: #014AFF;
+  filter: brightness(1.2);
+}
+
+.post-content a.post-inline-link:hover .post-inline-link__icon {
+  filter: brightness(1.2);
+  transform: translate(1px, -1px);
+}
+
+.post-content kbd {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.85em;
+  font-family: var(--font-mono);
+  box-shadow: 0 2px 0 var(--border);
+}
+
+.post-content code {
+  background: var(--bg-card);
+  color: var(--accent);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: var(--font-mono);
+}
+
+.code-block-wrapper {
+  background: #0f1115;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin: 2em 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.code-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--border);
+}
+
+.code-language {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.code-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.code-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.code-btn:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  color: var(--text-main);
+}
+
+.code-block-body {
+  overflow-x: auto;
+  padding: 20px;
+}
+.code-block-body::-webkit-scrollbar {
+  height: 8px;
+}
+.code-block-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+.code-block-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+.code-block-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.post-content pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  overflow: visible;
+}
+
+.code-block-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  pointer-events: auto;
+  overscroll-behavior: contain;
+}
+
+.code-block-overlay-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  
+  pointer-events: auto;
+}
+
+.code-block-expanded-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  pointer-events: auto;
+}
+
+/* Elevate the entire page container over the topbar when code block is expanded */
+.page:has(.code-block-wrapper.expanded) {
+  position: relative;
+  z-index: 9999;
+}
+
+.code-block-expanded-container .code-block-wrapper {
+  margin: 0;
+  height: 100%;
+  max-height: 90vh;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+}
+.code-block-expanded-container .code-block-body {
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.post-content pre code {
+  background: transparent;
+  color: #e2e8f0;
+  padding: 0;
+  font-size: 0.95em;
+  border-radius: 0;
+}
+
+.post-content blockquote {
+  margin: 2em 0;
+  padding: 16px 24px;
+  border-left: 4px solid var(--accent);
+  background: var(--bg-card);
+  border-radius: 0 12px 12px 0;
+  color: var(--text-muted);
+}
+.post-content blockquote p:last-child { margin-bottom: 0; }
+.post-content blockquote blockquote {
+  margin: 1em 0 0;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.post-content ul, .post-content ol {
+  margin: 0 0 1.5em;
+  padding-left: 24px;
+}
+.post-content li {
+  margin-bottom: 8px;
+}
+
+.post-content .task-list {
+  list-style: none;
+  padding-left: 0;
+}
+.post-content .task-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.post-content .task-list input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  background: transparent;
+}
+.post-content .task-list input[type="checkbox"]::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--accent);
+  background-color: var(--accent);
+  transform-origin: bottom left;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+.post-content .task-list input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+.post-content .task-list .task-done {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2em 0;
+  font-size: 0.95rem;
+}
+.post-content th, .post-content td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.post-content th {
+  background: var(--bg-card);
+  font-weight: 600;
+  color: var(--accent-2);
+}
+
+.post-content details {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin: 2em 0;
+  overflow: hidden;
+}
+.post-content summary {
+  padding: 16px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.post-content summary::before {
+  content: "▶";
+  font-size: 0.8em;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+}
+.post-content details[open] summary::before {
+  transform: rotate(90deg);
+}
+.post-content details .details-content {
+  padding: 0 20px 20px;
+  border-top: 1px solid var(--border);
+  margin-top: 16px;
+  padding-top: 16px;
+}
+
+.post-image-figure {
+  margin: 2em 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.post-image-figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.post-image-figure figcaption {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+/* Discord Style Link Embed Widget (Compact & Background Blurred) */
+.discord-embed-widget {
+  position: relative;
+  display: block;
+  background: rgba(14, 15, 18, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 16px;
+  text-decoration: none !important;
+  color: var(--text-main);
+  margin: 1.2em 0;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  max-width: 680px;
+}
+
+.discord-embed-widget:hover {
+  background: rgba(18, 20, 24, 0.95);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transform: none !important;
+}
+
+/* 1. 배경 블러 이미지 레이어 (강한 블러 처리 및 크기 확대) */
+.discord-embed-backdrop-image {
+  position: absolute;
+  inset: -20px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(28px) brightness(0.35);
+  transform: scale(1.15);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 2. 배경 그라데이션 및 마스킹 레이어 (왼쪽 위 -> 오른쪽 아래로 서서히 투명해짐) */
+.discord-embed-backdrop-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--embed-color, #0395FC) 24%, transparent) 0%,
+    rgba(10, 11, 14, 0.72) 42%,
+    rgba(10, 11, 14, 0.92) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+  transition: background 0.25s ease;
+}
+
+.discord-embed-widget:hover .discord-embed-backdrop-gradient {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--embed-color, #0395FC) 34%, transparent) 0%,
+    rgba(10, 11, 14, 0.62) 42%,
+    rgba(10, 11, 14, 0.88) 100%
+  );
+}
+
+/* 3. 본문 콘텐츠 레이어 (여백 최소화 & 슬림한 정렬) */
+
+.discord-embed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.discord-embed-provider {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.discord-embed-favicon {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.discord-embed-favicon-fallback {
+  width: 13px;
+  height: 13px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.discord-embed-provider-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+
+.discord-embed-top-right-action {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.discord-embed-ext-icon {
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.discord-embed-widget:hover .discord-embed-ext-icon {
+  color: #ffffff;
+  transform: translate(1px, -1px);
+}
+
+.discord-embed-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-right: 24px;
+}
+
+.discord-embed-title {
+  margin: 3px 0 0;
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s ease;
+}
+
+.discord-embed-widget:hover .discord-embed-title {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.discord-embed-desc {
+  margin: 1px 0 0;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.discord-embed-url {
+  margin-top: 1px;
+  font-size: 0.74rem;
+  color: rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Widgets */
+.post-widget {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-decoration: none;
+  color: inherit;
+  margin: 1.5em 0;
+  transition: all 0.2s;
+}
+.post-widget:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+
+.widget-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.widget-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.widget-title {
+  font-weight: 600;
+  font-size: 1.05rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.widget-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.widget-url, .widget-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--accent-2);
+}
+
+.widget-action {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.post-widget:hover .widget-action {
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.widget-action.action-large {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--accent-2);
+}
+.post-widget:hover .widget-action.action-large {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.file-widget-fallback {
+  border-style: dashed;
+}
+
+
+/* Mobile Category Selector */
+.mobile-category-selector {
+  display: block;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.mobile-category-selector::-webkit-scrollbar {
+  display: none;
+}
+.mobile-category-list {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.mobile-cat-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.mobile-cat-btn.active {
+  background: var(--text-main);
+  color: #000;
+  border-color: var(--text-main);
+  font-weight: 600;
+}
+@media (min-width: 1024px) {
+  .mobile-category-selector {
+    display: none;
+  }
+}
+
+
+.markdown-editor-textarea {
+  padding: 32px 48px 48px;
+}
+@media (max-width: 768px) {
+  .markdown-editor-textarea {
+    padding: 20px 24px 24px;
+  }
+}
+
+
+/* Markdown Editor Toolbar Styles */
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 3px;
+  row-gap: 6px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.editor-tool-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.editor-tool-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+.editor-tool-btn:hover {
+  background: rgba(255, 255, 255, 0.16) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  color: var(--text-main);
+}
+.editor-tool-btn:active {
+  transform: scale(0.96);
+}
+
+.editor-tool-btn.widget-btn {
+  gap: 4px;
+  font-size: 0.74rem;
+  padding: 3px 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+}
+.editor-tool-btn.widget-btn:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  color: var(--accent);
+}
+
+.editor-tool-separator {
+  width: 1px;
+  height: 16px;
+  background: var(--border);
+  margin: 0 2px;
+  flex-shrink: 0;
+}
+
+
+/* Post Banner Image */
+.post-banner-container {
+  width: 100%;
+  max-height: 400px;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 36px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+.post-banner-img {
+  width: 100%;
+  height: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  display: block;
+}
+
+
+/* Markdown Guide 1:1 Layout */
+.markdown-guide-layout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+}
+
+.markdown-editor-pane {
+  flex: 1 1 600px;
+  max-width: 800px;
+  width: 100%;
+  position: sticky;
+  top: 96px;
+  height: calc(100vh - 120px);
+  max-height: calc(100vh - 120px);
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  overscroll-behavior: contain;
+}
+
+.markdown-preview-pane {
+  flex: 1 1 600px;
+  max-width: 800px;
+  width: 100%;
+}
+
+@media (max-width: 1199px) {
+  .markdown-guide-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+  .markdown-editor-pane {
+    position: static;
+    height: 70vh;
+    min-height: 500px;
+  }
+}
+
+
+/* Syntax Highlighting overrides */
+.code-block-body pre code.hljs {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
