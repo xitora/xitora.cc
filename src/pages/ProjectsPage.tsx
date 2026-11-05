@@ -5,6 +5,7 @@ import "./projects.css";
 const projects = [
   {
     id: "royalsg",
+    image: "/assets/project-royalsg.png",
     name: "로얄상구 대여 예약",
     category: "예약 서비스",
     url: "https://royalsg.xitora.cc/",
@@ -20,6 +21,7 @@ const projects = [
   },
   {
     id: "chunitora",
+    image: "/assets/project-chunitora.png",
     name: "츄니토라",
     category: "게임 커뮤니티",
     url: "https://chuni.xitora.cc/",
@@ -55,6 +57,9 @@ export default function ProjectsPage({ onNavigate }: { onNavigate: (path: string
         <div className="projects-list">
           {projects.map((project, index) => (
             <article className={`project-card project-card--${project.id}`} key={project.id}>
+              <div className="project-card__backdrop" aria-hidden="true">
+                <img src={project.image} alt="" loading="lazy" />
+              </div>
               <div className="project-card__identity">
                 <span className="project-card__category">0{index + 1} / {project.category}</span>
                 <h2>{project.name}</h2>

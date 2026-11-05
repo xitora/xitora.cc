@@ -9,6 +9,9 @@
 .projects-list { display: grid; gap: 24px; }
 
 .project-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: grid;
   grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.2fr);
   gap: 40px;
@@ -16,6 +19,27 @@
   border: 1px solid var(--border);
   border-radius: 24px;
   background: var(--bg-card);
+}
+
+.project-card__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.28;
+  mask-image: linear-gradient(to right, #000 0%, #000 15%, transparent 78%);
+}
+
+.project-card__backdrop img {
+  position: absolute;
+  top: 50%;
+  left: -60px;
+  width: max(100%, 860px);
+  max-width: none;
+  height: auto;
+  filter: blur(3px);
+  transform-origin: left center;
+  transform: translateY(-50%) skewX(-8deg) skewY(-12deg);
 }
 
 .project-card--royalsg { --project-accent: #a8c7fa; }
