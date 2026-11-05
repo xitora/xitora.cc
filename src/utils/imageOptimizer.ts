@@ -58,8 +58,8 @@ export function calculateAspectRatioFit(
 
   const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight, 1);
   return {
-    width: Math.round(srcWidth * ratio),
-    height: Math.round(srcHeight * ratio),
+    width: Math.max(1, Math.round(srcWidth * ratio)),
+    height: Math.max(1, Math.round(srcHeight * ratio)),
   };
 }
 
@@ -169,7 +169,7 @@ export async function optimizeImage(
           savedPercent,
           width: targetWidth,
           height: targetHeight,
-          format: options.format,
+          format: blob.type,
           blob,
           dataUrl,
         });

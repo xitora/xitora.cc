@@ -24,6 +24,7 @@ import {
   generateRegexCodeSnippet,
   REGEX_PRESETS,
   REGEX_CHEATSHEET,
+  type RegexExecutionResult,
   type RegexPreset
 } from "../utils/regexTester";
 
@@ -78,8 +79,24 @@ export default function RegexTesterPage({ onNavigate }: RegexTesterPageProps) {
   };
 
   // 2. 정규표현식 분석 연산
-  const analysisResult = useMemo(() => {
-    return executeRegexAnalysis(pattern, flags, testText, replacePattern);
+  const [analysisResult, setAnalysisResult] = useState<RegexExecutionResult>(() => executeRegexAnalysis('', '', ''));
+  React.useEffect(() => {
+    setAnalysisResult(executeRegexAnalysis('', '', testText));
+    if (!pattern) return;
+    const worker = new Worker(new URL('../workers/regex.worker.ts', import.meta.url), { type: 'module' });
+    let timeout: ReturnType<typeof setTimeout>;
+    const finish = (result: RegexExecutionResult) => {
+      clearTimeout(timeout);
+      worker.terminate();
+      setAnalysisResult(result);
+    };
+    worker.onmessage = event => finish(event.data);
+    worker.onerror = () => finish({ isValid: false, error: '정규식을 실행하지 못했습니다.', matches: [], matchCount: 0, executionTimeMs: 0 });
+    const debounce = setTimeout(() => {
+      timeout = setTimeout(() => finish({ isValid: false, error: '실행 시간이 1.5초를 초과했습니다. 패턴이나 입력 길이를 줄여주세요.', matches: [], matchCount: 0, executionTimeMs: 1500 }), 1500);
+      worker.postMessage({ pattern, flags, text: testText, replacement: replacePattern });
+    }, 200);
+    return () => { clearTimeout(debounce); clearTimeout(timeout); worker.terminate(); };
   }, [pattern, flags, testText, replacePattern]);
 
   // 3. 프리셋 적용 핸들러

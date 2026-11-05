@@ -41,17 +41,14 @@ export const WEIGHT_UNITS: UnitDefinition[] = [
   { id: 'lb', name: '파운드', symbol: 'lb', ratioToBase: 453.592 },
 ];
 
-// 4. 데이터 (기준: B, 바이너리 1024)
+// 4. 데이터: SI 단위(1000)와 이진 단위(1024)를 구분합니다.
 export const DATA_UNITS: UnitDefinition[] = [
   { id: 'B', name: '바이트', symbol: 'B', ratioToBase: 1 },
-  { id: 'KB', name: '킬로바이트', symbol: 'KB', ratioToBase: 1024 },
-  { id: 'MB', name: '메가바이트', symbol: 'MB', ratioToBase: 1024 ** 2 },
-  { id: 'GB', name: '기가바이트', symbol: 'GB', ratioToBase: 1024 ** 3 },
-  { id: 'TB', name: '테라바이트', symbol: 'TB', ratioToBase: 1024 ** 4 },
-  { id: 'PB', name: '페타바이트', symbol: 'PB', ratioToBase: 1024 ** 5 },
+  ...['KB', 'MB', 'GB', 'TB', 'PB'].map((id, index) => ({ id, name: `${id} (1000 기준)`, symbol: id, ratioToBase: 1000 ** (index + 1) })),
+  ...['KiB', 'MiB', 'GiB', 'TiB', 'PiB'].map((id, index) => ({ id, name: `${id} (1024 기준)`, symbol: id, ratioToBase: 1024 ** (index + 1) })),
 ];
 
-// 5. 주요 통화 기준 환율 (기준: USD 1.0)
+// 5. 수동 환율 입력의 계산 예시값 (기준: USD 1.0, 실시간 시세 아님)
 export const DEFAULT_CURRENCY_RATES: Record<string, number> = {
   USD: 1.0,
   KRW: 1380.0,

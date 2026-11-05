@@ -164,7 +164,7 @@ export function convertToCsv(data: Record<string, unknown>[]): string {
   if (data.length === 0) return '';
   const headers = Object.keys(data[0]);
 
-  const csvRows = [headers.join(',')];
+  const csvRows = [headers.map(key => /[",\r\n]/.test(key) ? `"${key.replace(/"/g, '""')}"` : key).join(',')];
 
   data.forEach((row) => {
     const values = headers.map((header) => {

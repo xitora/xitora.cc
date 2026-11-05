@@ -67,12 +67,12 @@ test("buildEmailPayload: mailto 스키마 URL 검증", () => {
   assert.equal(buildEmailPayload({ to: "" }), "");
 });
 
-test("buildSmsPayload: 문자 및 전화 URI 검증", () => {
+test("buildSmsPayload: 메시지가 없어도 문자 앱 URI 유지", () => {
   const sms = buildSmsPayload({ phone: "010-9876-5432", message: "도착했습니다" });
   assert.equal(sms, "smsto:01098765432:도착했습니다");
 
   const callOnly = buildSmsPayload({ phone: "010-9876-5432" });
-  assert.equal(callOnly, "tel:01098765432");
+  assert.equal(callOnly, "smsto:01098765432:");
 
   assert.equal(buildSmsPayload({ phone: "" }), "");
 });

@@ -39,6 +39,7 @@ export default function UrlParserPage({ onNavigate }: UrlParserPageProps) {
   const [hostname, setHostname] = useState<string>('');
   const [port, setPort] = useState<string>('');
   const [pathname, setPathname] = useState<string>('');
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
   const [hash, setHash] = useState<string>('');
   const [params, setParams] = useState<QueryParamItem[]>([]);
 
@@ -47,14 +48,15 @@ export default function UrlParserPage({ onNavigate }: UrlParserPageProps) {
 
   // 파라미터나 기본 구성요소 변경 시 실시간 재조합되는 완성형 URL
   const reconstructedUrl = useMemo(() => {
-    return buildUrlString({ protocol, hostname, port, pathname, hash }, params);
-  }, [protocol, hostname, port, pathname, hash, params]);
+    return buildUrlString({ protocol, hostname, port, pathname, hash, ...credentials }, params);
+  }, [protocol, hostname, port, pathname, hash, params, credentials]);
 
   // 상단 URL 입력창 변경 시 분해 상태 동기화
   const handleUrlInputChange = (newUrl: string) => {
     setUrlInput(newUrl);
     const parsed = parseUrlString(newUrl);
     if (parsed.isValid) {
+      setCredentials({ username: parsed.username, password: parsed.password });
       setProtocol(parsed.protocol || 'https');
       setHostname(parsed.hostname);
       setPort(parsed.port);
@@ -71,6 +73,7 @@ export default function UrlParserPage({ onNavigate }: UrlParserPageProps) {
 
   // 초기화 (빈 상태)
   const handleReset = () => {
+    setCredentials({ username: '', password: '' });
     setUrlInput('');
     setProtocol('https');
     setHostname('');

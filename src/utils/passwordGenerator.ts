@@ -204,11 +204,14 @@ export function evaluatePasswordStrength(password: string): PasswordStrength {
   if (poolSize === 0) poolSize = 10;
 
   // 섀넌 엔트로피 공식: E = L * log2(poolSize)
-  const entropyBits = Math.round(password.length * Math.log2(poolSize));
+  const words = password.toLowerCase().split(/[-_ .]+/);
+  const isKnownPassphrase = words.length > 1 && words.every(word => DICEWARE_WORDLIST.includes(word.replace(/\d+$/, '')));
+  const phraseBits = words.length * Math.log2(DICEWARE_WORDLIST.length) + (/\d/.test(password) ? Math.log2(100 * words.length) : 0);
+  const entropyBits = Math.floor(isKnownPassphrase ? phraseBits : password.length * Math.log2(poolSize));
 
   // 초당 100억 회(10^10) 연산 가능한 공격자 기준 소요 시간 추정
   const guessesPerSecond = 1e10;
-  const totalCombinations = Math.pow(poolSize, password.length);
+  const totalCombinations = Math.pow(2, entropyBits);
   const secondsToCrack = totalCombinations / (2 * guessesPerSecond);
 
   let crackTimeEstimate = "즉시";

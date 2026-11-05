@@ -54,7 +54,7 @@ test('generateCode: 언어별(Fetch, Axios, Python, Go) 코드 생성 검증', (
   assert.notEqual(parsed, null);
   if (parsed) {
     const fetchCode = generateFetchCode(parsed);
-    assert.match(fetchCode, /fetch\('https:\/\/api\.example\.com\/login'/);
+    assert.match(fetchCode, /fetch\(["']https:\/\/api\.example\.com\/login["']/);
     assert.match(fetchCode, /method: 'POST'/);
 
     const axiosCode = generateAxiosCode(parsed);

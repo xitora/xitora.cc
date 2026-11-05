@@ -11,7 +11,8 @@ export const toHex = (bytes: Uint8Array, upper = false) => {
 };
 
 export const fromHex = (hex: string) => {
-  const cleanHex = hex.replace(/[^0-9a-fA-F]/g, '');
+  const cleanHex = hex.replace(/0x/gi, '').replace(/[\s,:]/g, '');
+  if (!/^[0-9a-fA-F]*$/.test(cleanHex)) throw new Error('올바른 16진수를 입력하세요.');
   if (cleanHex.length % 2 !== 0) throw new Error('Invalid hex length');
   const bytes = new Uint8Array(cleanHex.length / 2);
   for (let i = 0; i < bytes.length; i++) {

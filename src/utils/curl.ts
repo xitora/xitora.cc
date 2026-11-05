@@ -95,8 +95,8 @@ export function parseCurlCommand(rawCommand: string): ParsedCurl | null {
       } else if (token === '-u' || token === '--user') {
         i++;
         if (i < tokens.length) {
-          const [u, p] = tokens[i].split(':');
-          auth = { username: u, password: p || '' };
+          const separator = tokens[i].indexOf(':');
+          auth = separator < 0 ? { username: tokens[i], password: '' } : { username: tokens[i].slice(0, separator), password: tokens[i].slice(separator + 1) };
         }
       } else if (token.startsWith('http://') || token.startsWith('https://')) {
         url = token;
@@ -157,7 +157,7 @@ export function generateFetchCode(parsed: ParsedCurl): string {
   }
 
   if (data) {
-    let bodyFormatted = `'${data.replace(/'/g, "\\'")}'`;
+    let bodyFormatted = JSON.stringify(data);
     try {
       const parsedJson = JSON.parse(data);
       bodyFormatted = `JSON.stringify(${JSON.stringify(parsedJson, null, 2)})`;
@@ -169,14 +169,14 @@ export function generateFetchCode(parsed: ParsedCurl): string {
 
   if (options.length === 0) {
     return `// JavaScript Fetch
-fetch('${url}')
+fetch(${JSON.stringify(url)})
   .then(response => response.json())
   .then(data => console.log(data))
   .catch(error => console.error('Error:', error));`;
   }
 
   return `// JavaScript Fetch
-fetch('${url}', {
+fetch(${JSON.stringify(url)}, {
 ${options.join('\n')}
 })
   .then(response => response.json())
@@ -201,7 +201,7 @@ export function generateAxiosCode(parsed: ParsedCurl): string {
   }
 
   if (auth) {
-    configOptions.push(`  auth: {\n    username: '${auth.username}',\n    password: '${auth.password || ''}'\n  },`);
+    configOptions.push(`  auth: {\n    username: ${JSON.stringify(auth.username)},\n    password: ${JSON.stringify(auth.password || '')}\n  },`);
   }
 
   let dataArg = '';
@@ -210,7 +210,7 @@ export function generateAxiosCode(parsed: ParsedCurl): string {
       const parsedJson = JSON.parse(data);
       dataArg = JSON.stringify(parsedJson, null, 2);
     } catch {
-      dataArg = `'${data.replace(/'/g, "\\'")}'`;
+      dataArg = JSON.stringify(data);
     }
   }
 
@@ -220,7 +220,7 @@ export function generateAxiosCode(parsed: ParsedCurl): string {
     return `// JavaScript Axios
 import axios from 'axios';
 
-axios.${m}('${url}'${optStr})
+axios.${m}(${JSON.stringify(url)}${optStr})
   .then(response => {
     console.log(response.data);
   })
@@ -235,7 +235,7 @@ axios.${m}('${url}'${optStr})
   return `// JavaScript Axios
 import axios from 'axios';
 
-axios.${m}('${url}', ${postData}${optStr})
+axios.${m}(${JSON.stringify(url)}, ${postData}${optStr})
   .then(response => {
     console.log(response.data);
   })
@@ -249,12 +249,12 @@ axios.${m}('${url}', ${postData}${optStr})
  */
 export function generatePythonRequestsCode(parsed: ParsedCurl): string {
   const { url, method, headers, data, auth } = parsed;
-  const lines: string[] = ['# Python Requests', 'import requests', ''];
+  const lines: string[] = ['# Python Requests', 'import requests', 'import json', ''];
 
   if (Object.keys(headers).length > 0) {
     lines.push('headers = {');
     for (const [k, v] of Object.entries(headers)) {
-      lines.push(`    "${k}": "${v.replace(/"/g, '\\"')}",`);
+      lines.push(`    ${JSON.stringify(k)}: ${JSON.stringify(v)},`);
     }
     lines.push('}');
   }
@@ -264,19 +264,19 @@ export function generatePythonRequestsCode(parsed: ParsedCurl): string {
     try {
       const parsedJson = JSON.parse(data);
       isJson = true;
-      lines.push(`payload = ${JSON.stringify(parsedJson, null, 4)}`);
+      lines.push(`payload = json.loads(${JSON.stringify(JSON.stringify(parsedJson))})`);
     } catch {
-      lines.push(`data = "${data.replace(/"/g, '\\"')}"`);
+      lines.push(`data = ${JSON.stringify(data)}`);
     }
   }
 
-  const args: string[] = [`"${url}"`];
+  const args: string[] = [JSON.stringify(url)];
   if (Object.keys(headers).length > 0) args.push('headers=headers');
   if (data) {
     args.push(isJson ? 'json=payload' : 'data=data');
   }
   if (auth) {
-    args.push(`auth=("${auth.username}", "${auth.password || ''}")`);
+    args.push(`auth=(${JSON.stringify(auth.username)}, ${JSON.stringify(auth.password || '')})`);
   }
 
   const methodFn = method.toLowerCase();
@@ -295,16 +295,16 @@ export function generateGoCode(parsed: ParsedCurl): string {
   const { url, method, headers, data, auth } = parsed;
 
   const bodyInit = data
-    ? `var jsonData = []byte(\`${data}\`)\n\treq, err := http.NewRequest("${method}", "${url}", bytes.NewBuffer(jsonData))`
-    : `req, err := http.NewRequest("${method}", "${url}", nil)`;
+    ? `var jsonData = []byte(${JSON.stringify(data)})\n\treq, err := http.NewRequest(${JSON.stringify(method)}, ${JSON.stringify(url)}, bytes.NewBuffer(jsonData))`
+    : `req, err := http.NewRequest(${JSON.stringify(method)}, ${JSON.stringify(url)}, nil)`;
 
   const headerLines: string[] = [];
   for (const [k, v] of Object.entries(headers)) {
-    headerLines.push(`\treq.Header.Set("${k}", "${v}")`);
+    headerLines.push(`\treq.Header.Set(${JSON.stringify(k)}, ${JSON.stringify(v)})`);
   }
 
   if (auth) {
-    headerLines.push(`\treq.SetBasicAuth("${auth.username}", "${auth.password || ''}")`);
+    headerLines.push(`\treq.SetBasicAuth(${JSON.stringify(auth.username)}, ${JSON.stringify(auth.password || '')})`);
   }
 
   return `// Go net/http

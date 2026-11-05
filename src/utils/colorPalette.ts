@@ -165,14 +165,15 @@ export function getWcagRating(hex1: string, hex2: string): WcagRating {
 
   const lighter = Math.max(lum1, lum2);
   const darker = Math.min(lum1, lum2);
-  const ratio = Number(((lighter + 0.05) / (darker + 0.05)).toFixed(2));
+  const rawRatio = (lighter + 0.05) / (darker + 0.05);
+  const ratio = Number(rawRatio.toFixed(2));
 
   return {
     ratio,
-    aaNormal: ratio >= 4.5,
-    aaLarge: ratio >= 3.0,
-    aaaNormal: ratio >= 7.0,
-    aaaLarge: ratio >= 4.5
+    aaNormal: rawRatio >= 4.5,
+    aaLarge: rawRatio >= 3.0,
+    aaaNormal: rawRatio >= 7.0,
+    aaaLarge: rawRatio >= 4.5
   };
 }
 

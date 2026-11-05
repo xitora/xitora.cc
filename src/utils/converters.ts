@@ -1,4 +1,4 @@
-import { utf8ToBytes, bytesToUtf8, toHex, fromHex, md5, crc32 } from './core';
+import { utf8ToBytes, bytesToUtf8, toHex, fromHex, md5, crc32 } from './core.ts';
 
 export interface Format {
   id: string;
@@ -41,8 +41,13 @@ export const formats: Format[] = [
     decode: (val) => {
       const clean = removeDelimiter(val);
       if (clean.length % 8 !== 0) throw new Error('Invalid binary length');
+      if (!/^[01]*$/.test(clean)) throw new Error('잘못된 2진수입니다.');
       const bytes = new Uint8Array(clean.length / 8);
-      for(let i=0; i<bytes.length; i++) bytes[i] = parseInt(clean.substring(i*8, i*8+8), 2);
+      for(let i=0; i<bytes.length; i++) {
+        const value = parseInt(clean.substring(i*8, i*8+8), 2);
+        if (value > 255) throw new Error('바이트 범위(0~255)를 벗어났습니다.');
+        bytes[i] = value;
+      }
       return bytesToUtf8(bytes);
     }
   },
@@ -52,8 +57,13 @@ export const formats: Format[] = [
     decode: (val) => {
       const clean = removeDelimiter(val);
       if (clean.length % 6 !== 0) throw new Error('Invalid ternary length');
+      if (!/^[012]*$/.test(clean)) throw new Error('잘못된 3진수입니다.');
       const bytes = new Uint8Array(clean.length / 6);
-      for(let i=0; i<bytes.length; i++) bytes[i] = parseInt(clean.substring(i*6, i*6+6), 3);
+      for(let i=0; i<bytes.length; i++) {
+        const value = parseInt(clean.substring(i*6, i*6+6), 3);
+        if (value > 255) throw new Error('바이트 범위(0~255)를 벗어났습니다.');
+        bytes[i] = value;
+      }
       return bytesToUtf8(bytes);
     }
   },
@@ -63,8 +73,13 @@ export const formats: Format[] = [
     decode: (val) => {
       const clean = removeDelimiter(val);
       if (clean.length % 4 !== 0) throw new Error('Invalid quaternary length');
+      if (!/^[0123]*$/.test(clean)) throw new Error('잘못된 4진수입니다.');
       const bytes = new Uint8Array(clean.length / 4);
-      for(let i=0; i<bytes.length; i++) bytes[i] = parseInt(clean.substring(i*4, i*4+4), 4);
+      for(let i=0; i<bytes.length; i++) {
+        const value = parseInt(clean.substring(i*4, i*4+4), 4);
+        if (value > 255) throw new Error('바이트 범위(0~255)를 벗어났습니다.');
+        bytes[i] = value;
+      }
       return bytesToUtf8(bytes);
     }
   },
@@ -74,8 +89,13 @@ export const formats: Format[] = [
     decode: (val) => {
       const clean = removeDelimiter(val);
       if (clean.length % 3 !== 0) throw new Error('Invalid octal length');
+      if (!/^[01234567]*$/.test(clean)) throw new Error('잘못된 8진수입니다.');
       const bytes = new Uint8Array(clean.length / 3);
-      for(let i=0; i<bytes.length; i++) bytes[i] = parseInt(clean.substring(i*3, i*3+3), 8);
+      for(let i=0; i<bytes.length; i++) {
+        const value = parseInt(clean.substring(i*3, i*3+3), 8);
+        if (value > 255) throw new Error('바이트 범위(0~255)를 벗어났습니다.');
+        bytes[i] = value;
+      }
       return bytesToUtf8(bytes);
     }
   },
@@ -118,6 +138,7 @@ export const formats: Format[] = [
     decode: (val) => {
       const clean = removeDelimiter(val);
       if (clean.length % 8 !== 0) throw new Error('Invalid binary length');
+      if (!/^[01]*$/.test(clean)) throw new Error('잘못된 2진수입니다.');
       const bytes = new Uint8Array(clean.length / 8);
       for(let i=0; i<bytes.length; i++) bytes[i] = (~parseInt(clean.substring(i*8, i*8+8), 2)) & 0xFF;
       return bytesToUtf8(bytes);
@@ -469,7 +490,7 @@ export const formats: Format[] = [
   },
   {
     id: 'reversed', name: '글자 뒤집기 (Reversed Text)', category: '네이밍 규칙 & 대소문자 변환',
-    encode: (val) => val.split('').reverse().join('')
+    encode: (val) => Array.from(val).reverse().join('')
   },
   {
     id: 'leetspeak', name: '리트스피크 (1337)', category: '네이밍 규칙 & 대소문자 변환',

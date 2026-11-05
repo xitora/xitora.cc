@@ -73,6 +73,14 @@ export default function ImageOptimizerPage({ onNavigate }: ImageOptimizerPagePro
 
   // 업로드된 이미지 파일 목록
   const [images, setImages] = useState<ImageItem[]>([]);
+  const previewUrlsRef = useRef(new Set<string>());
+  useEffect(() => {
+    const current = new Set(images.map(image => image.previewUrl));
+    previewUrlsRef.current.forEach(url => { if (!current.has(url)) URL.revokeObjectURL(url); });
+    previewUrlsRef.current = current;
+  }, [images]);
+  useEffect(() => () => previewUrlsRef.current.forEach(url => URL.revokeObjectURL(url)), []);
+
   // 현재 비교 뷰어 및 편집에 선택된 이미지 ID
   const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
 
@@ -107,8 +115,11 @@ export default function ImageOptimizerPage({ onNavigate }: ImageOptimizerPagePro
         if (item.options.scalePreset > 0 && item.options.scalePreset < 1) {
           // 배율 적용
           const img = new Image();
-          img.src = item.previewUrl;
-          await new Promise((res) => (img.onload = res));
+          await new Promise<void>((resolve, reject) => {
+            img.onload = () => resolve();
+            img.onerror = () => reject(new Error('이미지를 불러오지 못했습니다.'));
+            img.src = item.previewUrl;
+          });
           optionsToApply.maxWidth = Math.round(img.naturalWidth * item.options.scalePreset);
           optionsToApply.maxHeight = Math.round(img.naturalHeight * item.options.scalePreset);
         }
@@ -156,7 +167,7 @@ export default function ImageOptimizerPage({ onNavigate }: ImageOptimizerPagePro
       for (const item of newItems) {
         const res = await processSingleImage(item);
         setImages((prev) =>
-          prev.map((it) => (it.id === item.id ? { ...it, result: res, isProcessing: false } : it))
+          prev.map((it) => (it.id === item.id && it.options === item.options ? { ...it, result: res, isProcessing: false } : it))
         );
       }
     },
@@ -204,7 +215,7 @@ export default function ImageOptimizerPage({ onNavigate }: ImageOptimizerPagePro
 
       const res = await processSingleImage({ ...activeImage, options: updatedOptions });
       setImages((prev) =>
-        prev.map((it) => (it.id === activeImage.id ? { ...it, result: res, isProcessing: false } : it))
+        prev.map((it) => (it.id === activeImage.id && it.options === updatedOptions ? { ...it, result: res, isProcessing: false } : it))
       );
     }, 350);
 
@@ -224,13 +235,13 @@ export default function ImageOptimizerPage({ onNavigate }: ImageOptimizerPagePro
     };
 
     setImages((prev) =>
-      prev.map((it) => ({ ...it, options: { ...currentOpts }, isProcessing: true }))
+      prev.map((it) => ({ ...it, options: currentOpts, isProcessing: true }))
     );
 
     for (const item of images) {
       const res = await processSingleImage({ ...item, options: currentOpts });
       setImages((prev) =>
-        prev.map((it) => (it.id === item.id ? { ...it, result: res, isProcessing: false } : it))
+        prev.map((it) => (it.id === item.id && it.options === currentOpts ? { ...it, result: res, isProcessing: false } : it))
       );
     }
   };
@@ -333,7 +344,7 @@ export default function ImageOptimizerPage({ onNavigate }: ImageOptimizerPagePro
   // 단일 파일 다운로드
   const handleDownloadSingle = (item: ImageItem) => {
     if (!item.result) return;
-    const ext = item.options.targetFormat === 'image/webp' ? 'webp' : item.options.targetFormat === 'image/jpeg' ? 'jpg' : 'png';
+    const ext = item.result.format === 'image/webp' ? 'webp' : item.result.format === 'image/jpeg' ? 'jpg' : 'png';
     const baseName = item.name.substring(0, item.name.lastIndexOf('.')) || item.name;
     const a = document.createElement('a');
     a.href = item.result.dataUrl;
@@ -1158,7 +1169,7 @@ export default function ImageOptimizerPage({ onNavigate }: ImageOptimizerPagePro
                             <span style={{ fontSize: '0.74rem', color: '#10b981', fontWeight: 600 }}>
                               -{img.result.savedPercent.toFixed(0)}% ({formatBytes(img.result.compressedSize)})
                             </span>
-                          ) : null}
+                          ) : <span role="alert" style={{ fontSize: '0.74rem', color: '#f87171' }}>이미지를 변환하지 못했습니다.</span>}
                         </div>
                       </div>
 
@@ -1177,6 +1188,7 @@ export default function ImageOptimizerPage({ onNavigate }: ImageOptimizerPagePro
                             padding: '4px',
                           }}
                           title="다운로드"
+                          disabled={!img.result || img.isProcessing}
                         >
                           <Download size={14} />
                         </button>

@@ -128,7 +128,7 @@ export default function CurlConverterPage({ onNavigate }: CurlConverterPageProps
     >
       {/* 1. 상단 플로팅 알약 (FloatingToolHeader) */}
       <FloatingToolHeader
-        toolName="cURL ↔ 언어별 코드 변환기"
+        toolName="cURL → 언어별 코드 변환기"
         categoryName="도구"
         categoryPath="/tools"
         onNavigate={onNavigate}
@@ -180,7 +180,7 @@ export default function CurlConverterPage({ onNavigate }: CurlConverterPageProps
             </div>
             <div>
               <h1 style={{ fontSize: "1.75rem", fontWeight: 700, margin: 0, letterSpacing: "-0.03em" }}>
-                cURL ↔ 언어별 코드 변환기
+                cURL → 언어별 코드 변환기
               </h1>
               <p style={{ fontSize: "0.92rem", color: "#888", margin: 0, marginTop: 4 }}>
                 cURL 명령어를 Fetch, Axios, Python Requests, Go HTTP 코드로 즉시 변환

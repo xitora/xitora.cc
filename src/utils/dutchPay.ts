@@ -123,9 +123,9 @@ export function calculateDutchPay(
     const creditors: { name: string; amount: number }[] = [];
 
     settlements.forEach((s) => {
-      if (s.netAmount < -1) {
+      if (s.netAmount <= -1) {
         debtors.push({ name: s.name, amount: -s.netAmount });
-      } else if (s.netAmount > 1) {
+      } else if (s.netAmount >= 1) {
         creditors.push({ name: s.name, amount: s.netAmount });
       }
     });
@@ -153,8 +153,8 @@ export function calculateDutchPay(
       debtor.amount -= transferAmount;
       creditor.amount -= transferAmount;
 
-      if (debtor.amount <= 1) dIdx++;
-      if (creditor.amount <= 1) cIdx++;
+      if (debtor.amount < 1) dIdx++;
+      if (creditor.amount < 1) cIdx++;
     }
 
     return {

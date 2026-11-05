@@ -234,7 +234,8 @@ export function executeRegexAnalysis(
 
         // 0길이 매칭(예: /a*/, /^/) 무한 루프 방지
         if (match[0].length === 0) {
-          regex.lastIndex++;
+          const codePoint = testText.codePointAt(regex.lastIndex);
+          regex.lastIndex += flags.includes("u") && codePoint !== undefined && codePoint > 0xffff ? 2 : 1;
           if (regex.lastIndex > testText.length) break;
         }
       }

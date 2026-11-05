@@ -346,11 +346,11 @@ export function decodeWorldTimeShare(searchQuery: string): { cityIds: string[]; 
     const tParam = params.get('t');
 
     const cityIds = citiesParam ? citiesParam.split(',').filter(Boolean) : [];
-    const timestampMs = tParam ? parseInt(tParam, 10) : null;
+    const timestampMs = tParam ? Number(tParam) : null;
 
     return {
       cityIds,
-      timestampMs: timestampMs && !isNaN(timestampMs) ? timestampMs : null,
+      timestampMs: timestampMs !== null && Number.isFinite(new Date(timestampMs).getTime()) ? timestampMs : null,
     };
   } catch {
     return { cityIds: [], timestampMs: null };

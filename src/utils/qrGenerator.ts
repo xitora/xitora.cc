@@ -131,7 +131,7 @@ export function buildEmailPayload(options: EmailPayloadOptions): string {
     if (subject.trim()) params.append("subject", subject.trim());
     if (body.trim()) params.append("body", body.trim());
 
-    const queryString = params.toString();
+    const queryString = params.toString().replace(/\+/g, '%20');
     return `mailto:${encodeURIComponent(to.trim())}${queryString ? `?${queryString}` : ""}`;
   } catch (error) {
     console.error("이메일 페이로드 생성 실패:", error);
@@ -151,7 +151,7 @@ export function buildSmsPayload(options: SmsPayloadOptions): string {
     if (message.trim()) {
       return `smsto:${cleanPhone}:${message.trim()}`;
     }
-    return `tel:${cleanPhone}`;
+    return `smsto:${cleanPhone}:`;
   } catch (error) {
     console.error("SMS 페이로드 생성 실패:", error);
     return "";

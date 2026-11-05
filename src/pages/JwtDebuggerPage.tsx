@@ -73,6 +73,7 @@ export default function JwtDebuggerPage({ onNavigate }: JwtDebuggerPageProps) {
 
     if (!decodeResult.success || !secretKey.trim()) {
       setVerificationResult({ tested: false, valid: false });
+      setIsVerifying(false);
       return;
     }
 
@@ -108,13 +109,13 @@ export default function JwtDebuggerPage({ onNavigate }: JwtDebuggerPageProps) {
   }, [tokenInput, secretKey, decodeResult]);
 
   // 클립보드 복사 핸들러
-  const handleCopyText = useCallback((text: string, label: string) => {
+  const handleCopyText = useCallback(async (text: string, label: string) => {
     try {
-      navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(text);
       setCopyToast(`${label}이(가) 클립보드에 복사되었습니다.`);
       setTimeout(() => setCopyToast(null), 2500);
     } catch (err) {
-      console.error('클립보드 복사 실패:', err);
+      setCopyToast('복사하지 못했습니다. 브라우저의 클립보드 권한을 확인하세요.');
     }
   }, []);
 

@@ -36,6 +36,7 @@ interface UnitConverterPageProps {
 
 export default function UnitConverterPage({ onNavigate }: UnitConverterPageProps) {
   // 선택된 카테고리
+  const [currencyRates, setCurrencyRates] = useState({ ...DEFAULT_CURRENCY_RATES });
   const [category, setCategory] = useState<UnitCategory>('area');
   // 입력값 (프리셋 선택 전에는 비어있음)
   const [inputValue, setInputValue] = useState<string>('');
@@ -87,10 +88,10 @@ export default function UnitConverterPage({ onNavigate }: UnitConverterPageProps
     const num = parseFloat(inputValue);
     if (isNaN(num)) return 0;
     if (category === 'currency') {
-      return convertCurrency(num, fromUnit, toUnit);
+      return convertCurrency(num, fromUnit, toUnit, currencyRates);
     }
     return convertUnit(num, fromUnit, toUnit, category);
-  }, [inputValue, fromUnit, toUnit, category]);
+  }, [inputValue, fromUnit, toUnit, category, currencyRates]);
 
   // 전체 단위 실시간 변환 맵
   const allConvertedList = useMemo(() => {
@@ -102,7 +103,7 @@ export default function UnitConverterPage({ onNavigate }: UnitConverterPageProps
         id: cur.id,
         name: cur.name,
         symbol: cur.symbol,
-        value: convertCurrency(num, fromUnit, cur.id),
+        value: convertCurrency(num, fromUnit, cur.id, currencyRates),
       }));
     }
 
@@ -112,7 +113,7 @@ export default function UnitConverterPage({ onNavigate }: UnitConverterPageProps
       symbol: u.symbol,
       value: convertUnit(num, fromUnit, u.id, category),
     }));
-  }, [inputValue, fromUnit, category, currentUnits]);
+  }, [inputValue, fromUnit, category, currentUnits, currencyRates]);
 
   // 단위 교환 (Swap)
   const handleSwapUnits = useCallback(() => {
@@ -223,7 +224,7 @@ export default function UnitConverterPage({ onNavigate }: UnitConverterPageProps
                 단위 & 환율 변환기
               </h1>
               <p style={{ fontSize: "0.92rem", color: "#888", margin: 0, marginTop: 4 }}>
-                길이, 면적(평 ↔ ㎡), 무게, 데이터 단위 및 실시간 주요 통화 환율 즉시 계산
+                길이, 면적(평 ↔ ㎡), 무게, 데이터 단위 및 직접 입력한 환율로 통화 변환
               </p>
             </div>
           </div>
@@ -460,6 +461,25 @@ export default function UnitConverterPage({ onNavigate }: UnitConverterPageProps
             </div>
           </div>
         </div>
+
+        {category === 'currency' && (
+          <section style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: 24, marginBottom: 24 }}>
+            <h2 style={{ fontSize: 16, margin: '0 0 12px' }}>수동 환율 설정</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>초기값은 계산 예시입니다. 실시간 시세가 아니므로 1 USD당 환율을 직접 입력하세요.</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 12 }}>
+              {CURRENCY_LIST.filter(currency => currency.id !== 'USD').map(currency => (
+                <label key={currency.id} style={{ display: 'grid', gap: 6, fontSize: 13 }}>
+                  1 USD → {currency.id}
+                  <input type="number" min="0.000001" step="any" value={currencyRates[currency.id]}
+                    onChange={event => {
+                      const value = Number(event.target.value);
+                      if (Number.isFinite(value) && value > 0) setCurrencyRates(previous => ({ ...previous, [currency.id]: value }));
+                    }} style={{ width: '100%', padding: 10, borderRadius: 8, background: 'var(--bg-card)', color: 'var(--text-main)', border: '1px solid var(--border)' }} />
+                </label>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* 전체 단위 실시간 환산표 그리드 */}
         <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: 24 }}>

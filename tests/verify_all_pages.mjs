@@ -1,31 +1,10 @@
 import puppeteer from 'puppeteer';
+import { toolsList } from '../src/data/tools.ts';
 
 const routes = [
-  '/',
-  '/posts',
-  '/projects',
-  '/settings',
-  '/contact',
-  '/markdownguide',
-  '/tools',
-  '/tools/curl-converter',
-  '/tools/jwt-debugger',
-  '/tools/unit-currency-converter',
-  '/tools/dutch-pay-calculator',
-  '/tools/noise-generator',
-  '/tools/data-inspector',
-  '/tools/world-time',
-  '/tools/image-optimizer',
-  '/tools/qr-generator',
-  '/tools/regex-tester',
-  '/tools/color-palette',
-  '/tools/password-generator',
-  '/posts/1',
-  '/posts/2',
-  '/settings/01',
-  '/settings/02',
-  '/settings/03',
-  '/settings/04'
+  '/', '/posts', '/projects', '/settings', '/contact', '/markdownguide', '/tools',
+  ...toolsList.map(tool => `/tools/${tool.id}`),
+  '/posts/1', '/posts/2', '/settings/01', '/settings/02', '/settings/03', '/settings/04'
 ];
 
 async function runVerification() {
@@ -37,7 +16,7 @@ async function runVerification() {
   });
 
   const page = await browser.newPage();
-  await page.setViewport({ width: 1280, height: 900 });
+  await page.setViewport({ width: Number(process.env.VIEWPORT_WIDTH) || 1280, height: 900 });
 
   const errors = [];
   const results = [];
@@ -68,11 +47,11 @@ async function runVerification() {
   });
 
   for (const route of routes) {
-    const url = `http://localhost:5173${route}`;
+    const url = `${process.env.BASE_URL || "http://127.0.0.1:4173"}${route}`;
     try {
       errors.length = 0; // 초기화
-      const response = await page.goto(url, { waitUntil: 'networkidle0', timeout: 10000 });
-      await new Promise((r) => setTimeout(r, 300));
+      const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 10000 });
+      await page.waitForSelector('h1');
 
       const status = response ? response.status() : 0;
       const title = await page.title();

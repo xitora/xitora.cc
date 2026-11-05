@@ -31,6 +31,7 @@ export default function UniversalDataInspectorPage({ onNavigate }: { onNavigate:
   const debouncedInput = useDebounce(input, 150);
 
   useEffect(() => {
+    let cancelled = false;
     const process = async () => {
       if (!debouncedInput) {
         setOutputText('');
@@ -54,14 +55,17 @@ export default function UniversalDataInspectorPage({ onNavigate }: { onNavigate:
           result = await outFormat.encode(plainText, { delimiter, hexUpper });
         }
 
+        if (cancelled) return;
         setOutputText(result);
         setError(null);
       } catch (err: any) {
+        if (cancelled) return;
         setOutputText('');
         setError(err.message || '변환 중 오류가 발생했습니다.');
       }
     };
-    process();
+    void process();
+    return () => { cancelled = true; };
   }, [debouncedInput, inputFormatId, outputFormatId, delimiter, hexUpper]);
 
   const handleSwap = () => {
@@ -70,9 +74,14 @@ export default function UniversalDataInspectorPage({ onNavigate }: { onNavigate:
     setInput(outputText);
   };
 
-  const handleCopy = () => {
+  const handleCopy = async () => {
     if (!outputText) return;
-    navigator.clipboard.writeText(outputText);
+    try {
+      await navigator.clipboard.writeText(outputText);
+    } catch {
+      setError('복사하지 못했습니다. 클립보드 권한을 확인하세요.');
+      return;
+    }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -80,7 +89,7 @@ export default function UniversalDataInspectorPage({ onNavigate }: { onNavigate:
   const metrics = useMemo(() => {
     if (!debouncedInput) return { chars: 0, bytes: 0, words: 0, lines: 0 };
     return {
-      chars: debouncedInput.length,
+      chars: Array.from(debouncedInput).length,
       bytes: utf8ToBytes(debouncedInput).length,
       words: debouncedInput.trim() ? debouncedInput.trim().split(/\s+/).length : 0,
       lines: debouncedInput.split('\n').length
@@ -92,10 +101,10 @@ export default function UniversalDataInspectorPage({ onNavigate }: { onNavigate:
     animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } }
   };
 
-  const renderFormatOptions = () => {
+  const renderFormatOptions = (inputOnly = false) => {
     return categories.map(c => (
       <optgroup key={c} label={c}>
-        {formats.filter(f => f.category === c).map(f => (
+        {formats.filter(f => f.category === c && (!inputOnly || f.decode)).map(f => (
           <option key={f.id} value={f.id}>{f.name}</option>
         ))}
       </optgroup>
@@ -209,7 +218,7 @@ export default function UniversalDataInspectorPage({ onNavigate }: { onNavigate:
                     onChange={(e) => setInputFormatId(e.target.value)}
                     style={{ background: 'var(--bg-card-hover)', border: '1px solid var(--border)', borderRadius: '8px', padding: '6px 10px', color: 'var(--text-main)', outline: 'none', fontSize: '0.88rem', fontWeight: 600, minWidth: 0, maxWidth: '240px' }}
                   >
-                    {renderFormatOptions()}
+                    {renderFormatOptions(true)}
                   </select>
                 </div>
                 <button onClick={() => setInput('')} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', flexShrink: 0 }} title="입력 데이터 지우기">
@@ -237,6 +246,7 @@ export default function UniversalDataInspectorPage({ onNavigate }: { onNavigate:
               <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
               <button
                 onClick={handleSwap}
+                disabled={!outputText || Boolean(error) || !formats.find(f => f.id === outputFormatId)?.decode}
                 style={{
                   display: 'flex',
                   alignItems: 'center',

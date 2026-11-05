@@ -47,7 +47,8 @@ export function parseUrlString(urlString: string): ParsedUrlDetails {
   try {
     // 프로토콜이 생략된 경우 (예: example.com/api) 보정 시도
     let normalized = urlString.trim();
-    if (!normalized.includes('://') && !normalized.startsWith('//')) {
+    if (normalized.startsWith('//')) normalized = `https:${normalized}`;
+    if (!normalized.includes('://')) {
       normalized = `https://${normalized}`;
     }
 
@@ -103,6 +104,8 @@ export function parseUrlString(urlString: string): ParsedUrlDetails {
 export function buildUrlString(
   baseDetails: {
     protocol?: string;
+    username?: string;
+    password?: string;
     hostname?: string;
     port?: string;
     pathname?: string;
@@ -130,10 +133,13 @@ export function buildUrlString(
 
     const url = new URL(path, base);
 
+    url.username = baseDetails.username || '';
+    url.password = baseDetails.password || '';
+
     // 활성화된 파라미터만 추가
     params.forEach((param) => {
       if (param.enabled && param.key.trim() !== '') {
-        url.searchParams.append(param.key.trim(), param.value);
+        url.searchParams.append(param.key, param.value);
       }
     });
 

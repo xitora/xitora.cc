@@ -134,7 +134,7 @@ export function decodeJwt(token: string): { success: true; data: DecodedJwt } | 
  */
 export function formatUnixTimestamp(unixSeconds: number): string {
   try {
-    if (!unixSeconds || isNaN(unixSeconds)) return '-';
+    if (!Number.isFinite(unixSeconds)) return '-';
     const date = new Date(unixSeconds * 1000);
     if (isNaN(date.getTime())) return '-';
 
@@ -192,16 +192,16 @@ export function evaluateTokenStatus(payload: JwtPayload, nowSeconds: number = Ma
     const nbf = typeof payload.nbf === 'number' ? payload.nbf : undefined;
 
     let issuedAtText: string | undefined;
-    if (iat) {
+    if (iat !== undefined) {
       issuedAtText = `${formatUnixTimestamp(iat)} (${getRelativeTimeText(iat, nowSeconds)})`;
     }
 
     let notBeforeText: string | undefined;
-    if (nbf) {
+    if (nbf !== undefined) {
       notBeforeText = `${formatUnixTimestamp(nbf)} (${getRelativeTimeText(nbf, nowSeconds)})`;
     }
 
-    if (nbf && nowSeconds < nbf) {
+    if (nbf !== undefined && nowSeconds < nbf) {
       return {
         status: 'future',
         message: '토큰이 아직 활성화되지 않았습니다 (Not Before 제한).',
@@ -211,7 +211,7 @@ export function evaluateTokenStatus(payload: JwtPayload, nowSeconds: number = Ma
       };
     }
 
-    if (exp) {
+    if (exp !== undefined) {
       const isExpired = nowSeconds >= exp;
       const expiresInText = `${formatUnixTimestamp(exp)} (${isExpired ? '만료됨' : '유효함'}, ${getRelativeTimeText(exp, nowSeconds)})`;
 

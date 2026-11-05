@@ -13,6 +13,8 @@ npm run dev
 
 `npm test`로 단위 테스트를, `npm run build`로 타입 검사와 배포용 빌드를 실행합니다. 결과는 `dist/`에 생성됩니다.
 
+`npm run preview`를 별도 터미널에서 실행한 뒤 `npm run test:browser`로 전체 페이지와 주요 도구 흐름을 확인합니다.
+
 ## 콘텐츠
 
 - 게시글: `src/data/posts/*.md`

@@ -72,7 +72,7 @@ export function createZipBundle(files: ZipFileInput[]): Uint8Array {
 
     view.setUint32(0, 0x04034b50, true); // Local file header signature
     view.setUint16(4, 20, true); // Version needed
-    view.setUint16(6, 0, true); // General purpose flag
+    view.setUint16(6, 0x0800, true); // UTF-8 filename
     view.setUint16(8, 0, true); // Compression method (0 = store)
     view.setUint16(10, 0, true); // Mod time
     view.setUint16(12, 0, true); // Mod date
@@ -107,7 +107,7 @@ export function createZipBundle(files: ZipFileInput[]): Uint8Array {
     view.setUint32(0, 0x02014b50, true); // Central directory signature
     view.setUint16(4, 20, true); // Version made by
     view.setUint16(6, 20, true); // Version needed
-    view.setUint16(8, 0, true); // General purpose bit flag
+    view.setUint16(8, 0x0800, true); // UTF-8 filename
     view.setUint16(10, 0, true); // Compression method (0)
     view.setUint16(12, 0, true); // Mod time
     view.setUint16(14, 0, true); // Mod date

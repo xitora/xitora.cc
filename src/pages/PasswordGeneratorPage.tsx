@@ -537,11 +537,11 @@ export default function PasswordGeneratorPage({ onNavigate }: PasswordGeneratorP
                 <span style={{ color: "#888", whiteSpace: "nowrap" }}>보안 강도:</span>
                 <span style={{ color: strength.color, fontWeight: 700, whiteSpace: "nowrap" }}>{strength.label}</span>
                 <span style={{ color: "#666" }}>|</span>
-                <span style={{ color: "#aaa", whiteSpace: "nowrap" }}>엔트로피: {strength.entropyBits} bits</span>
+                <span style={{ color: "#aaa", whiteSpace: "nowrap" }}>추정 엔트로피: {strength.entropyBits} bits</span>
               </div>
 
               <span style={{ color: "#888", whiteSpace: "nowrap" }}>
-                해독 예상 시간: <strong style={{ color: "#fff" }}>{strength.crackTimeEstimate}</strong>
+                균일 난수 가정의 탐색 시간: <strong style={{ color: "#fff" }}>{strength.crackTimeEstimate}</strong>
               </span>
             </div>
 

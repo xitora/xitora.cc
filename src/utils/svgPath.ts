@@ -50,26 +50,29 @@ export interface PathAnalysis {
  */
 function tokenizeSvgPath(d: string): { command: SvgCommandType; args: number[]; raw: string }[] {
   const result: { command: SvgCommandType; args: number[]; raw: string }[] = [];
-  // SVG 명령어(문자)를 기준으로 분할
+  const counts: Record<string, number> = { M: 2, L: 2, H: 1, V: 1, C: 6, S: 4, Q: 4, T: 2, A: 7, Z: 0 };
   const commandRegex = /([a-df-z])([^a-df-z]*)/gi;
+  const numberRegex = /[-+]?(?:\d*\.\d+|\d+)(?:[eE][-+]?\d+)?/g;
   let match: RegExpExecArray | null;
-
+  let offset = 0;
   while ((match = commandRegex.exec(d)) !== null) {
+    if (d.slice(offset, match.index).trim()) throw new Error('잘못된 Path 데이터입니다.');
+    offset = commandRegex.lastIndex;
     const cmd = match[1] as SvgCommandType;
-    const argStr = match[2].trim();
-    // 음수, 소수점, 지수표기법 숫자를 안전하게 분리
-    const numberRegex = /[-+]?(?:\d*\.\d+|\d+)(?:[eE][-+]?\d+)?/g;
-    const args: number[] = [];
-    let numMatch: RegExpExecArray | null;
-    while ((numMatch = numberRegex.exec(argStr)) !== null) {
-      args.push(parseFloat(numMatch[0]));
+    const upper = cmd.toUpperCase();
+    const count = counts[upper];
+    if (count === undefined || match[2].replace(numberRegex, '').replace(/[\s,]/g, '')) throw new Error('잘못된 Path 명령입니다.');
+    const args = (match[2].match(numberRegex) || []).map(Number);
+    if (args.some(n => !Number.isFinite(n)) || (count === 0 ? args.length !== 0 : !args.length || args.length % count !== 0)) throw new Error(`${cmd} 명령의 좌표 개수가 올바르지 않습니다.`);
+    if (count === 0) result.push({ command: cmd, args: [], raw: cmd });
+    for (let i = 0; count > 0 && i < args.length; i += count) {
+      const command = upper === 'M' && i > 0 ? (cmd === 'M' ? 'L' : 'l') : cmd;
+      const values = args.slice(i, i + count);
+      if (upper === 'A' && (values[0] < 0 || values[1] < 0 || ![0, 1].includes(values[3]) || ![0, 1].includes(values[4]))) throw new Error('호의 반지름 또는 플래그가 올바르지 않습니다.');
+      result.push({ command, args: values, raw: `${command} ${values.join(' ')}` });
     }
-    result.push({
-      command: cmd,
-      args,
-      raw: `${cmd} ${argStr}`.trim(),
-    });
   }
+  if (d.slice(offset).trim() || (result.length && result[0].command.toUpperCase() !== 'M')) throw new Error('Path는 M 명령으로 시작해야 합니다.');
 
   return result;
 }
@@ -176,6 +179,12 @@ export function parseSvgPath(d: string): PathAnalysis {
         }
         case 'S': {
           bezierCount++;
+          const previous = segments[segments.length - 1];
+          const lastControl = previous?.controlPoints[previous.controlPoints.length - 1];
+          const reflected = previous && /[CS]/i.test(previous.command) && lastControl
+            ? { x: 2 * curX - lastControl.x, y: 2 * curY - lastControl.y } : { x: curX, y: curY };
+          controlPoints.push(reflected);
+          updateBounds(reflected.x, reflected.y);
           const cp2x = isRel ? curX + (tok.args[0] || 0) : tok.args[0] || 0;
           const cp2y = isRel ? curY + (tok.args[1] || 0) : tok.args[1] || 0;
           endX = isRel ? curX + (tok.args[2] || 0) : tok.args[2] || 0;
@@ -192,6 +201,18 @@ export function parseSvgPath(d: string): PathAnalysis {
           endY = isRel ? curY + (tok.args[3] || 0) : tok.args[3] || 0;
           controlPoints.push({ x: cpx, y: cpy });
           updateBounds(cpx, cpy);
+          break;
+        }
+        case 'T': {
+          bezierCount++;
+          const previous = segments[segments.length - 1];
+          const lastControl = previous?.controlPoints[previous.controlPoints.length - 1];
+          const reflected = previous && /[QT]/i.test(previous.command) && lastControl
+            ? { x: 2 * curX - lastControl.x, y: 2 * curY - lastControl.y } : { x: curX, y: curY };
+          controlPoints.push(reflected);
+          updateBounds(reflected.x, reflected.y);
+          endX = isRel ? curX + tok.args[0] : tok.args[0];
+          endY = isRel ? curY + tok.args[1] : tok.args[1];
           break;
         }
         case 'A': {

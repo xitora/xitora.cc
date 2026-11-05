@@ -19,7 +19,7 @@ export const toolsList: ToolItem[] = [
   },
   {
     id: "curl-converter",
-    title: "cURL ↔ 언어별 코드 변환기",
+    title: "cURL → 언어별 코드 변환기",
     description: "cURL 명령어를 Fetch, Axios, Python Requests, Go HTTP 코드로 즉시 변환하는 도구",
     category: "개발자 도구"
   },
@@ -98,7 +98,7 @@ export const toolsList: ToolItem[] = [
   {
     id: "image-optimizer",
     title: "이미지 최적화 도구",
-    description: "브라우저 로컬 기반 무손실·고효율 이미지 압축, 포맷 변환 및 비포/애프터 비교 도구",
+    description: "브라우저 로컬 기반 크기 조절·포맷 변환 이미지 압축, 포맷 변환 및 비포/애프터 비교 도구",
     category: "미디어"
   },
   {

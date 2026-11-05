@@ -180,12 +180,12 @@ export default function WorldTimePage({ onNavigate }: WorldTimePageProps) {
   };
 
   // 일정 링크 복사
-  const handleCopyShareLink = () => {
+  const handleCopyShareLink = async () => {
     try {
       const cityIds = selectedCities.map((c) => c.id);
       const query = encodeWorldTimeShare(cityIds, currentDate.getTime());
       const shareUrl = `${window.location.origin}${window.location.pathname}?${query}`;
-      navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(shareUrl);
       notify('일정 공유 링크가 클립보드에 복사되었습니다.');
     } catch {
       notify('링크 복사 중 오류가 발생했습니다.');
