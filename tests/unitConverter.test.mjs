@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   convertUnit,
+  convertCurrency,
   formatUnitNumber,
   UNIT_SAMPLE_PRESETS,
 } from '../src/utils/unitConverter.ts';
@@ -33,6 +34,14 @@ test('convertUnit: 무게 단위 변환 (1근 = 600g, 1lb = 약 453.6g)', () => 
   assert.equal(Number(lbG.toFixed(1)), 453.6);
 });
 
+test('convertCurrency: 통화 환율 변환 (USD -> KRW, USD -> JPY)', () => {
+  const rates = { USD: 1, KRW: 1380, JPY: 150 };
+  const krw = convertCurrency(100, 'USD', 'KRW', rates);
+  assert.equal(krw, 138000);
+
+  const jpyToKrw = convertCurrency(150, 'JPY', 'KRW', rates);
+  assert.equal(jpyToKrw, 1380);
+});
 
 test('UNIT_SAMPLE_PRESETS: 모든 프리셋 유효성 검증', () => {
   for (const preset of UNIT_SAMPLE_PRESETS) {

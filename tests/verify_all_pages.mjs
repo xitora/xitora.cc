@@ -52,7 +52,6 @@ async function runVerification() {
       errors.length = 0; // 초기화
       const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 10000 });
       await page.waitForSelector('h1');
-      if (route.startsWith('/tools/')) await page.waitForSelector('.ws-main');
 
       const status = response ? response.status() : 0;
       const title = await page.title();

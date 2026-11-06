@@ -194,12 +194,192 @@ writePage('tools/index.html', toolsHtml);
 writePage('tools.html', toolsHtml);
 generatedList.push('/tools (도구 목록)');
 
-const toolRegistry = JSON.parse(fs.readFileSync(path.join(rootDir, 'src/data/toolRegistry.json'), 'utf8'));
-for (const tool of toolRegistry) {
-  const html = createHtml(template, { title: tool.title, description: tool.description, image: defaultImage, url: `https://xitora.cc/tools/${tool.id}` });
-  writePage(`tools/${tool.id}/index.html`, html);
-  generatedList.push(`/tools/${tool.id} (${tool.title})`);
-}
+// 5-1. CSS 애니메이션 이징(Easing) 샌드박스 (/tools/css-easing-sandbox)
+const cssEasingSandboxHtml = createHtml(template, {
+  title: 'CSS 애니메이션 이징(Easing) 샌드박스',
+  description: 'cubic-bezier 커브를 인터랙티브하게 조절하며 UI 전환 프리뷰 및 코드 추출 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/css-easing-sandbox',
+});
+writePage('tools/css-easing-sandbox/index.html', cssEasingSandboxHtml);
+writePage('tools/css-easing-sandbox.html', cssEasingSandboxHtml);
+generatedList.push('/tools/css-easing-sandbox (CSS 애니메이션 이징 샌드박스)');
+
+// 5-2. cURL → 언어별 코드 변환기 (/tools/curl-converter)
+const curlConverterHtml = createHtml(template, {
+  title: 'cURL → 언어별 코드 변환기',
+  description: 'cURL 명령어를 Fetch, Axios, Python Requests, Go HTTP 코드로 즉시 변환하는 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/curl-converter',
+});
+writePage('tools/curl-converter/index.html', curlConverterHtml);
+writePage('tools/curl-converter.html', curlConverterHtml);
+generatedList.push('/tools/curl-converter (cURL → 언어별 코드 변환기)');
+
+// 5-3. Favicon & 앱 아이콘 생성기 (/tools/favicon-generator)
+const faviconGeneratorHtml = createHtml(template, {
+  title: 'Favicon & 앱 아이콘 생성기',
+  description: '단일 고해상도 이미지를 기반으로 웹용 파비콘(ico/png) 및 iOS/안드로이드 규격별 번들 ZIP 생성기',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/favicon-generator',
+});
+writePage('tools/favicon-generator/index.html', faviconGeneratorHtml);
+writePage('tools/favicon-generator.html', faviconGeneratorHtml);
+generatedList.push('/tools/favicon-generator (Favicon & 앱 아이콘 생성기)');
+
+// 5-3. JWT 디코더 & 검증기 (/tools/jwt-debugger)
+const jwtDebuggerHtml = createHtml(template, {
+  title: 'JWT 디코더 & 검증기',
+  description: 'JWT 토큰의 Header와 Payload를 실시간 디코딩하고, 만료 시간(exp) 및 HMAC 서명 유효성을 검증하는 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/jwt-debugger',
+});
+writePage('tools/jwt-debugger/index.html', jwtDebuggerHtml);
+writePage('tools/jwt-debugger.html', jwtDebuggerHtml);
+generatedList.push('/tools/jwt-debugger (JWT 디코더 & 검증기)');
+
+// 5-4. 단위 & 환율 변환기 (/tools/unit-currency-converter)
+const unitConverterHtml = createHtml(template, {
+  title: '단위 & 환율 변환기',
+  description: '길이, 면적(평 ↔ ㎡), 무게, 데이터 단위 및 주요 외화 환율 즉시 계산 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/unit-currency-converter',
+});
+writePage('tools/unit-currency-converter/index.html', unitConverterHtml);
+writePage('tools/unit-currency-converter.html', unitConverterHtml);
+generatedList.push('/tools/unit-currency-converter (단위 & 환율 변환기)');
+
+// 5-5. 더치페이 & 정산 계산기 (/tools/dutch-pay-calculator)
+const dutchPayHtml = createHtml(template, {
+  title: '더치페이 & 정산 계산기',
+  description: 'n빵 균등 정산, 2차/차등 항목 정산, 100원 단위 절사 및 카카오톡 영수증 공유 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/dutch-pay-calculator',
+});
+writePage('tools/dutch-pay-calculator/index.html', dutchPayHtml);
+writePage('tools/dutch-pay-calculator.html', dutchPayHtml);
+generatedList.push('/tools/dutch-pay-calculator (더치페이 & 정산 계산기)');
+
+// 5-6. 디지털 노이즈 사운드 생성기 (/tools/noise-generator)
+const noiseGeneratorHtml = createHtml(template, {
+  title: '디지털 노이즈 사운드 생성기',
+  description: '백색소음, 빗소리, 모닥불 등 웹 오디오 기반 수면·집중용 앰비언스 믹서 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/noise-generator',
+});
+writePage('tools/noise-generator/index.html', noiseGeneratorHtml);
+writePage('tools/noise-generator.html', noiseGeneratorHtml);
+generatedList.push('/tools/noise-generator (디지털 노이즈 사운드 생성기)');
+
+// 5-7. 더미 데이터(Mock Data) 생성기 (/tools/mock-data-generator)
+const mockDataGeneratorHtml = createHtml(template, {
+  title: '더미 데이터(Mock Data) 생성기',
+  description: '이름, 이메일, 주소, UUID 등 스키마 정의에 따른 JSON/CSV 가상 데이터 대량 생성 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/mock-data-generator',
+});
+writePage('tools/mock-data-generator/index.html', mockDataGeneratorHtml);
+writePage('tools/mock-data-generator.html', mockDataGeneratorHtml);
+generatedList.push('/tools/mock-data-generator (더미 데이터 생성기)');
+
+// 5-4. Universal Data Inspector (/tools/data-inspector)
+const dataInspectorHtml = createHtml(template, {
+  title: 'Universal Data Inspector',
+  description: '62+ Data Formats Converter & Analyzer',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/data-inspector',
+});
+writePage('tools/data-inspector/index.html', dataInspectorHtml);
+writePage('tools/data-inspector.html', dataInspectorHtml);
+generatedList.push('/tools/data-inspector (포맷 변환 도구)');
+
+// 5-3. 세계 시간 조율 도구 (/tools/world-time)
+const worldTimeHtml = createHtml(template, {
+  title: '세계 시간 조율 도구',
+  description: '다국가 협업을 위한 24시간 인터랙티브 시차 비교 및 근무 시간 조율 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/world-time',
+});
+writePage('tools/world-time/index.html', worldTimeHtml);
+writePage('tools/world-time.html', worldTimeHtml);
+generatedList.push('/tools/world-time (세계 시간 조율 도구)');
+
+// 5-4. 이미지 최적화 도구 (/tools/image-optimizer)
+const imageOptimizerHtml = createHtml(template, {
+  title: '이미지 최적화 도구',
+  description: '브라우저 로컬 기반 크기 조절·포맷 변환 이미지 압축, 포맷 변환 및 비포/애프터 비교 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/image-optimizer',
+});
+writePage('tools/image-optimizer/index.html', imageOptimizerHtml);
+writePage('tools/image-optimizer.html', imageOptimizerHtml);
+generatedList.push('/tools/image-optimizer (이미지 최적화 도구)');
+
+// 5-5. QR 코드 생성기 (/tools/qr-generator)
+const qrGeneratorHtml = createHtml(template, {
+  title: 'QR 코드 생성기',
+  description: '브라우저 로컬 기반 고화질 벡터 및 로고 QR 코드 생성 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/qr-generator',
+});
+writePage('tools/qr-generator/index.html', qrGeneratorHtml);
+writePage('tools/qr-generator.html', qrGeneratorHtml);
+generatedList.push('/tools/qr-generator (QR 코드 생성기)');
+
+// 5-6. SVG 경로(Path) 비주얼라이저 (/tools/svg-path-visualizer)
+const svgPathVisualizerHtml = createHtml(template, {
+  title: 'SVG 경로(Path) 비주얼라이저',
+  description: '복잡한 SVG Path(d 속성) 코드를 붙여넣어 노드와 베지어 곡선 포인트를 시각적으로 분해·검사하는 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/svg-path-visualizer',
+});
+writePage('tools/svg-path-visualizer/index.html', svgPathVisualizerHtml);
+writePage('tools/svg-path-visualizer.html', svgPathVisualizerHtml);
+generatedList.push('/tools/svg-path-visualizer (SVG 경로 비주얼라이저)');
+
+// 5-6. URL 파서 & 쿼리스트링 빌더 (/tools/url-parser)
+const urlParserHtml = createHtml(template, {
+  title: 'URL 파서 & 쿼리스트링 빌더',
+  description: '긴 URL의 Protocol, Host, Path, Query Parameter 분해 및 파라미터 실시간 추가·수정 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/url-parser',
+});
+writePage('tools/url-parser/index.html', urlParserHtml);
+writePage('tools/url-parser.html', urlParserHtml);
+generatedList.push('/tools/url-parser (URL 파서 & 쿼리스트링 빌더)');
+
+// 5-6. 정규식 테스터 (/tools/regex-tester)
+const regexTesterHtml = createHtml(template, {
+  title: '정규식 테스터',
+  description: '정규표현식 실시간 매칭 분석, 캡처 그룹 하이라이트 및 코드 스니펫 생성 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/regex-tester',
+});
+writePage('tools/regex-tester/index.html', regexTesterHtml);
+writePage('tools/regex-tester.html', regexTesterHtml);
+generatedList.push('/tools/regex-tester (정규식 테스터)');
+
+// 5-7. 색상 팔레트 분석 도구 (/tools/color-palette)
+const colorPaletteHtml = createHtml(template, {
+  title: '색상 팔레트 분석 도구',
+  description: '이미지 주요 색상 자동 추출, 색채 조화 팔레트 및 WCAG 접근성 명도 대비 분석 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/color-palette',
+});
+writePage('tools/color-palette/index.html', colorPaletteHtml);
+writePage('tools/color-palette.html', colorPaletteHtml);
+generatedList.push('/tools/color-palette (색상 팔레트 분석 도구)');
+
+// 5-12. 보안 비밀번호 생성기 (/tools/password-generator)
+const passwordGeneratorHtml = createHtml(template, {
+  title: '보안 비밀번호 생성기',
+  description: '암호학적 난수(CSPRNG) 기반의 무작위 비밀번호, Diceware 패스프레이즈 및 PIN 생성 도구',
+  image: defaultImage,
+  url: 'https://xitora.cc/tools/password-generator',
+});
+writePage('tools/password-generator/index.html', passwordGeneratorHtml);
+writePage('tools/password-generator.html', passwordGeneratorHtml);
+generatedList.push('/tools/password-generator (보안 비밀번호 생성기)');
 
 // 6. 게시글 상세 (/posts/### 및 /post/###)
 const postsDir = path.join(rootDir, 'src', 'data', 'posts');

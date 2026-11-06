@@ -5,26 +5,7 @@
   "outputDirectory": "dist",
   "installCommand": "npm ci",
   "routes": [
-    {
-      "src": "/tools/(css-easing-sandbox|curl-converter|favicon-generator|dutch-pay-calculator|unit-currency-converter|noise-generator|mock-data-generator|jwt-debugger|data-inspector|world-time|image-optimizer|qr-generator|svg-path-visualizer|url-parser|regex-tester|color-palette|password-generator)/?",
-      "status": 308,
-      "headers": {
-        "Location": "/tools"
-      }
-    },
-    {
-      "src": "/sw.js",
-      "headers": {
-        "Cache-Control": "no-cache"
-      },
-      "continue": true
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/.*",
-      "dest": "/index.html"
-    }
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
   ]
 }

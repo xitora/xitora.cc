@@ -59,6 +59,10 @@ test('SI and binary data units are distinct', async () => {
  assert.equal(convertUnit(1,'KB','B','data'),1000);
  assert.equal(convertUnit(1,'KiB','B','data'),1024);
 });
+test('passphrase strength reflects the actual word list', async () => {
+ const {evaluatePasswordStrength}=await import('../src/utils/passwordGenerator.ts');
+ assert.ok(evaluatePasswordStrength('Apple-Banana-Galaxy-Orbit').entropyBits < 24);
+});
 test('cURL retains colon characters in Basic Auth and generates valid Python JSON', async () => {
  const {parseCurlCommand,generatePythonRequestsCode,generateFetchCode}=await import('../src/utils/curl.ts');
  const parsed=parseCurlCommand(`curl https://example.com -u 'user:a:b' --json '{"enabled":true,"value":null}'`);
@@ -78,6 +82,12 @@ test('UTF-8 ZIP filenames declare their encoding in both headers', async () => {
  assert.equal(view.getUint16(6,true),0x800);
  const central=30+new TextEncoder().encode('아이콘.png').length+4;
  assert.equal(view.getUint16(central+8,true),0x800);
+});
+test('format conversions reject invalid digits and preserve emoji', async () => {
+ const {formats}=await import('../src/utils/converters.ts');
+ assert.throws(()=>formats.find(f=>f.id==='binary').decode('22222222'));
+ assert.throws(()=>formats.find(f=>f.id==='octal').decode('777'));
+ assert.equal(formats.find(f=>f.id==='reversed').encode('a😀b'),'b😀a');
 });
 
 test('world time rejects malformed timestamps and preserves epoch zero', async () => {

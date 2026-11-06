@@ -1,0 +1,11 @@
+/* Only components and utilities to prevent global reset conflicts */
+@tailwind components;
+@tailwind utilities;
+
+.inspector-wrapper {
+  /* Scope some reset */
+  box-sizing: border-box;
+}
+.inspector-wrapper *, .inspector-wrapper *::before, .inspector-wrapper *::after {
+  box-sizing: inherit;
+}
