@@ -1,6 +1,6 @@
-// 단위 및 환율 변환기 유틸리티
+// 단위 변환 유틸리티
 
-export type UnitCategory = 'length' | 'area' | 'weight' | 'data' | 'currency';
+export type UnitCategory = 'length' | 'area' | 'weight' | 'data';
 
 export interface UnitDefinition {
   id: string;
@@ -48,29 +48,6 @@ export const DATA_UNITS: UnitDefinition[] = [
   ...['KiB', 'MiB', 'GiB', 'TiB', 'PiB'].map((id, index) => ({ id, name: `${id} (1024 기준)`, symbol: id, ratioToBase: 1024 ** (index + 1) })),
 ];
 
-// 5. 수동 환율 입력의 계산 예시값 (기준: USD 1.0, 실시간 시세 아님)
-export const DEFAULT_CURRENCY_RATES: Record<string, number> = {
-  USD: 1.0,
-  KRW: 1380.0,
-  JPY: 152.5,
-  EUR: 0.92,
-  CNY: 7.24,
-  GBP: 0.78,
-  CAD: 1.38,
-  AUD: 1.51,
-};
-
-export const CURRENCY_LIST = [
-  { id: 'KRW', name: '대한민국 원', symbol: '₩' },
-  { id: 'USD', name: '미국 달러', symbol: '$' },
-  { id: 'JPY', name: '일본 엔', symbol: '¥' },
-  { id: 'EUR', name: '유럽연합 유로', symbol: '€' },
-  { id: 'CNY', name: '중국 위안', symbol: '¥' },
-  { id: 'GBP', name: '영국 파운드', symbol: '£' },
-  { id: 'CAD', name: '캐나다 달러', symbol: 'C$' },
-  { id: 'AUD', name: '호주 달러', symbol: 'A$' },
-];
-
 /**
  * 카테고리별 단위 변환 함수
  */
@@ -100,26 +77,6 @@ export function convertUnit(
 }
 
 /**
- * 통화 환율 변환 함수
- */
-export function convertCurrency(
-  amount: number,
-  fromCode: string,
-  toCode: string,
-  rates: Record<string, number> = DEFAULT_CURRENCY_RATES
-): number {
-  if (isNaN(amount) || amount === 0) return 0;
-  if (fromCode === toCode) return amount;
-
-  const fromRate = rates[fromCode] || 1;
-  const toRate = rates[toCode] || 1;
-
-  // USD 기준 변환: amount / fromRate * toRate
-  const inUsd = amount / fromRate;
-  return inUsd * toRate;
-}
-
-/**
  * 숫자 깔끔하게 포맷팅
  */
 export function formatUnitNumber(num: number): string {
@@ -144,6 +101,4 @@ export const UNIT_SAMPLE_PRESETS: UnitPreset[] = [
   { title: '34평 ➔ 제곱미터(㎡)', category: 'area', fromUnit: 'pyeong', toUnit: 'm2', value: 34 },
   { title: '1파운드(lb) ➔ g/kg', category: 'weight', fromUnit: 'lb', toUnit: 'kg', value: 1 },
   { title: '삼겹살 1근 ➔ g', category: 'weight', fromUnit: 'geun', toUnit: 'g', value: 1 },
-  { title: '100달러(USD) ➔ 원화', category: 'currency', fromUnit: 'USD', toUnit: 'KRW', value: 100 },
-  { title: '1만엔(JPY) ➔ 원화', category: 'currency', fromUnit: 'JPY', toUnit: 'KRW', value: 10000 },
 ];

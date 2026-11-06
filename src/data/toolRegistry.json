@@ -1,0 +1,164 @@
+[
+  {
+    "id": "images",
+    "title": "이미지",
+    "description": "압축, 변환, 크기 조절과 편집",
+    "category": "이미지·디자인",
+    "keywords": "사진 png jpg webp favicon",
+    "defaultOperation": "image/webp",
+    "storage": "draft"
+  },
+  {
+    "id": "svg",
+    "title": "SVG",
+    "description": "코드 편집과 안전한 미리보기",
+    "category": "이미지·디자인",
+    "keywords": "벡터 path",
+    "defaultOperation": "preview",
+    "storage": "draft"
+  },
+  {
+    "id": "motion",
+    "title": "CSS 모션",
+    "description": "키프레임과 전환 효과 편집",
+    "category": "이미지·디자인",
+    "keywords": "easing animation",
+    "defaultOperation": "keyframes",
+    "storage": "draft"
+  },
+  {
+    "id": "colors",
+    "title": "색상",
+    "description": "색 변환, 팔레트와 대비 검사",
+    "category": "이미지·디자인",
+    "keywords": "컬러 wcag",
+    "defaultOperation": "contrast",
+    "storage": "draft"
+  },
+  {
+    "id": "text",
+    "title": "텍스트·Markdown",
+    "description": "텍스트 정리와 정규식 바꾸기",
+    "category": "텍스트·데이터",
+    "keywords": "문자 markdown regex",
+    "defaultOperation": "공백 정리",
+    "storage": "draft"
+  },
+  {
+    "id": "encoding",
+    "title": "인코딩·해시",
+    "description": "문자 인코딩과 체크섬 계산",
+    "category": "텍스트·데이터",
+    "keywords": "base64 url utf8 md5",
+    "defaultOperation": "Base64",
+    "storage": "draft"
+  },
+  {
+    "id": "data",
+    "title": "데이터",
+    "description": "JSON, CSV, YAML, XML 변환",
+    "category": "텍스트·데이터",
+    "keywords": "트리 표",
+    "defaultOperation": "JSON",
+    "storage": "draft"
+  },
+  {
+    "id": "diff",
+    "title": "비교",
+    "description": "텍스트와 JSON 변경 내용 비교",
+    "category": "텍스트·데이터",
+    "keywords": "차이 diff",
+    "defaultOperation": "텍스트",
+    "storage": "draft"
+  },
+  {
+    "id": "requests",
+    "title": "요청 분석",
+    "description": "URL, cURL, JWT를 전송 없이 분석",
+    "category": "개발",
+    "keywords": "쿼리 토큰 fetch",
+    "defaultOperation": "URL",
+    "storage": "memory"
+  },
+  {
+    "id": "mock-data",
+    "title": "샘플 데이터",
+    "description": "필드 규칙으로 JSON·CSV 생성",
+    "category": "개발",
+    "keywords": "더미 mock",
+    "defaultOperation": "generate",
+    "storage": "draft"
+  },
+  {
+    "id": "qr",
+    "title": "QR 코드",
+    "description": "코드 생성과 이미지·카메라 읽기",
+    "category": "파일·미디어",
+    "keywords": "wifi vcard",
+    "defaultOperation": "텍스트·URL",
+    "storage": "draft"
+  },
+  {
+    "id": "pdf",
+    "title": "PDF",
+    "description": "합치기, 나누기와 페이지 편집",
+    "category": "파일·미디어",
+    "keywords": "문서 이미지",
+    "defaultOperation": "합치기",
+    "storage": "draft"
+  },
+  {
+    "id": "audio",
+    "title": "오디오",
+    "description": "구간 자르기와 볼륨·페이드",
+    "category": "파일·미디어",
+    "keywords": "wav mp3",
+    "defaultOperation": "WAV",
+    "storage": "draft"
+  },
+  {
+    "id": "files",
+    "title": "파일",
+    "description": "이름 일괄 변경과 중복 확인",
+    "category": "파일·미디어",
+    "keywords": "zip sha256",
+    "defaultOperation": "rename",
+    "storage": "draft"
+  },
+  {
+    "id": "focus",
+    "title": "집중",
+    "description": "집중 타이머와 배경 소리",
+    "category": "생활",
+    "keywords": "휴식 소음",
+    "defaultOperation": "집중",
+    "storage": "draft"
+  },
+  {
+    "id": "datetime",
+    "title": "날짜·시간",
+    "description": "세계 시간, 날짜와 Unix 변환",
+    "category": "생활",
+    "keywords": "타임존 시차",
+    "defaultOperation": "date",
+    "storage": "draft"
+  },
+  {
+    "id": "units",
+    "title": "단위",
+    "description": "길이, 면적, 무게와 온도 변환",
+    "category": "생활",
+    "keywords": "속도 시간 데이터",
+    "defaultOperation": "길이",
+    "storage": "draft"
+  },
+  {
+    "id": "settlement",
+    "title": "정산",
+    "description": "항목별 참여자와 원 단위 송금 계산",
+    "category": "생활",
+    "keywords": "더치페이 비용",
+    "defaultOperation": "expenses",
+    "storage": "draft"
+  }
+]

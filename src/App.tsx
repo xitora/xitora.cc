@@ -20,29 +20,12 @@ import { SiGithub, SiDiscord, SiX, SiYoutube, SiKakaotalk, SiSteam, SiRiotgames,
 import { Mail } from "lucide-react";
 import { toolsList } from "./data/tools";
 
-// 18개 도구 및 마크다운/블로그 페이지 동적 코드 스플리팅 (초기 번들 경량화)
+// 페이지별로 필요한 코드만 불러옵니다.
 const PostListPage = lazy(() => import("./pages/PostListPage"));
 const PostDetailPage = lazy(() => import("./pages/PostDetailPage"));
 const MarkdownGuidePage = lazy(() => import("./pages/MarkdownGuidePage"));
 const ProjectsPage = lazy(() => import("./pages/ProjectsPage"));
-const ToolsListPage = lazy(() => import("./pages/ToolsListPage"));
-const CssEasingSandboxPage = lazy(() => import("./pages/CssEasingSandboxPage"));
-const CurlConverterPage = lazy(() => import("./pages/CurlConverterPage"));
-const FaviconGeneratorPage = lazy(() => import("./pages/FaviconGeneratorPage"));
-const DutchPayPage = lazy(() => import("./pages/DutchPayPage"));
-const UnitConverterPage = lazy(() => import("./pages/UnitConverterPage"));
-const NoiseGeneratorPage = lazy(() => import("./pages/NoiseGeneratorPage"));
-const MockDataGeneratorPage = lazy(() => import("./pages/MockDataGeneratorPage"));
-const UrlParserPage = lazy(() => import("./pages/UrlParserPage"));
-const JwtDebuggerPage = lazy(() => import("./pages/JwtDebuggerPage"));
-const UniversalDataInspectorPage = lazy(() => import("./pages/UniversalDataInspectorPage"));
-const WorldTimePage = lazy(() => import("./pages/WorldTimePage"));
-const ImageOptimizerPage = lazy(() => import("./pages/ImageOptimizerPage"));
-const QrGeneratorPage = lazy(() => import("./pages/QrGeneratorPage"));
-const SvgPathVisualizerPage = lazy(() => import("./pages/SvgPathVisualizerPage"));
-const RegexTesterPage = lazy(() => import("./pages/RegexTesterPage"));
-const ColorPalettePage = lazy(() => import("./pages/ColorPalettePage"));
-const PasswordGeneratorPage = lazy(() => import("./pages/PasswordGeneratorPage"));
+const ToolWorkspacePage = lazy(() => import("./workspaces/ToolWorkspacePage"));
 
 const githubUrl = "https://github.com/xitora";
 type Navigate = (path: string) => void;
@@ -143,7 +126,6 @@ function Topbar({ path, onNavigate }: { path: string; onNavigate: Navigate }) {
 
 function Breadcrumbs({ path, onNavigate }: { path: string, onNavigate: Navigate }) {
   const pathname = path.split('?')[0];
-  // 모든 도구 페이지는 자체 FloatingToolHeader 알약을 보유하므로 상단 브레드크럼 알약과의 중복 겹침을 방지합니다.
   if (pathname.startsWith('/tools/')) return null;
   const isPostDetail = pathname.startsWith('/post/') || (pathname.startsWith('/posts/') && pathname.split('/').length > 2);
   const isSettingsDetail = pathname.startsWith('/settings/') && pathname.split('/').length > 2;
@@ -822,6 +804,7 @@ function App() {
 
   useEffect(() => {
     const lenis = new Lenis({
+      prevent: (node: HTMLElement) => !!node.closest(".ws"),
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
@@ -907,24 +890,19 @@ function App() {
   const isPostList = pathname === "/posts";
   const isMarkdownGuide = pathname === "/markdownguide";
   const isPostDetail = pathname.startsWith("/post/") || (pathname.startsWith("/posts/") && pathname.split('/').length > 2);
-  const isToolsList = pathname === "/tools";
-  const isCssEasingSandbox = pathname === "/tools/css-easing-sandbox";
-  const isCurlConverter = pathname === "/tools/curl-converter";
-  const isFaviconGenerator = pathname === "/tools/favicon-generator";
-  const isDutchPay = pathname === "/tools/dutch-pay-calculator";
-  const isUnitConverter = pathname === "/tools/unit-currency-converter";
-  const isNoiseGenerator = pathname === "/tools/noise-generator";
-  const isMockDataGenerator = pathname === "/tools/mock-data-generator";
-  const isJwtDebugger = pathname === "/tools/jwt-debugger";
-  const isDataInspector = pathname === "/tools/data-inspector";
-  const isWorldTime = pathname === "/tools/world-time";
-  const isImageOptimizer = pathname === "/tools/image-optimizer";
-  const isQrGenerator = pathname === "/tools/qr-generator";
-  const isSvgPathVisualizer = pathname === "/tools/svg-path-visualizer";
-  const isUrlParser = pathname === "/tools/url-parser";
-  const isRegexTester = pathname === "/tools/regex-tester";
-  const isColorPalette = pathname === "/tools/color-palette";
-  const isPasswordGenerator = pathname === "/tools/password-generator";
+  const isTools = pathname === "/tools" || pathname.startsWith("/tools/");
+  useEffect(() => {
+    document.documentElement.classList.toggle('tools-workspace', isTools);
+    return () => document.documentElement.classList.remove('tools-workspace');
+  }, [isTools]);
+  const requestedTool = pathname.split('/')[2];
+  const activeTool = toolsList.find(t => t.id === requestedTool);
+  useEffect(() => {
+    if (isTools && requestedTool && !activeTool) {
+      window.history.replaceState({}, '', '/tools');
+      setPath('/tools');
+    }
+  }, [isTools, requestedTool, activeTool]);
 
   let contentNode: React.ReactNode;
 
@@ -937,42 +915,8 @@ function App() {
   } else if (isPostDetail) {
     const postId = pathname.split("/")[2];
     contentNode = <PostDetailPage key="post-detail" id={postId} onNavigate={navigate} />;
-  } else if (isCssEasingSandbox) {
-    contentNode = <CssEasingSandboxPage key="css-easing-sandbox" onNavigate={navigate} />;
-  } else if (isCurlConverter) {
-    contentNode = <CurlConverterPage key="curl-converter" onNavigate={navigate} />;
-  } else if (isFaviconGenerator) {
-    contentNode = <FaviconGeneratorPage key="favicon-generator" onNavigate={navigate} />;
-  } else if (isDutchPay) {
-    contentNode = <DutchPayPage key="dutch-pay-calculator" onNavigate={navigate} />;
-  } else if (isUnitConverter) {
-    contentNode = <UnitConverterPage key="unit-currency-converter" onNavigate={navigate} />;
-  } else if (isNoiseGenerator) {
-    contentNode = <NoiseGeneratorPage key="noise-generator" onNavigate={navigate} />;
-  } else if (isMockDataGenerator) {
-    contentNode = <MockDataGeneratorPage key="mock-data-generator" onNavigate={navigate} />;
-  } else if (isJwtDebugger) {
-    contentNode = <JwtDebuggerPage key="jwt-debugger" onNavigate={navigate} />;
-  } else if (isDataInspector) {
-    contentNode = <UniversalDataInspectorPage key="data-inspector" onNavigate={navigate} />;
-  } else if (isWorldTime) {
-    contentNode = <WorldTimePage key="world-time" onNavigate={navigate} />;
-  } else if (isImageOptimizer) {
-    contentNode = <ImageOptimizerPage key="image-optimizer" onNavigate={navigate} />;
-  } else if (isQrGenerator) {
-    contentNode = <QrGeneratorPage key="qr-generator" onNavigate={navigate} />;
-  } else if (isSvgPathVisualizer) {
-    contentNode = <SvgPathVisualizerPage key="svg-path-visualizer" onNavigate={navigate} />;
-  } else if (isUrlParser) {
-    contentNode = <UrlParserPage key="url-parser" onNavigate={navigate} />;
-  } else if (isRegexTester) {
-    contentNode = <RegexTesterPage key="regex-tester" onNavigate={navigate} />;
-  } else if (isColorPalette) {
-    contentNode = <ColorPalettePage key="color-palette" onNavigate={navigate} />;
-  } else if (isPasswordGenerator) {
-    contentNode = <PasswordGeneratorPage key="password-generator" onNavigate={navigate} />;
-  } else if (isToolsList) {
-    contentNode = <ToolsListPage key="tools-list" onNavigate={navigate} currentPath={path} />;
+  } else if (isTools) {
+    contentNode = <ToolWorkspacePage key={activeTool?.id || 'tools'} toolId={activeTool?.id} onNavigate={navigate} />;
   } else if (isSettingsDetail) {
     const gameId = pathname.split('/')[2];
     contentNode = <SettingsPage key="settings-detail" onNavigate={navigate} gameId={gameId} />;
@@ -989,18 +933,18 @@ function App() {
       <PageBackdrop />
       <div className="app-layout">
         <div className="gradient-mesh" />
-        <Topbar path={path} onNavigate={navigate} />
+        {!isTools && <Topbar path={path} onNavigate={navigate} />}
         <div className="main-scroll-area">
-          <Breadcrumbs path={path} onNavigate={navigate} />
+          {!isTools && <Breadcrumbs path={path} onNavigate={navigate} />}
           <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
             <Suspense fallback={<PageLoadingFallback />}>
               {contentNode}
             </Suspense>
           </AnimatePresence>
-          <Footer path={path} onScrollTop={() => window.scrollTo({ top: 0, behavior: "smooth" })} />
+          {!isTools && <Footer path={path} onScrollTop={() => window.scrollTo({ top: 0, behavior: "smooth" })} />}
         </div>
-        <MobileFloatingNav path={path} onNavigate={navigate} />
-        <BackTutorial path={path} />
+        {!isTools && <MobileFloatingNav path={path} onNavigate={navigate} />}
+        {!isTools && <BackTutorial path={path} />}
       </div>
     </>
   );
