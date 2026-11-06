@@ -6,7 +6,7 @@
 .projects-heading { margin: 0 0 40px; }
 .projects-heading h1 { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 2.5rem; letter-spacing: -0.04em; }
 .projects-heading p { margin: 16px 0 0; color: var(--text-muted); }
-.projects-list { display: grid; gap: 24px; }
+.projects-list { display: grid; grid-auto-rows: 1fr; gap: 24px; }
 
 .project-card {
   position: relative;
@@ -41,9 +41,11 @@
 }
 
 .project-card--royalsg { --project-accent: #b394da; }
+.project-card--royalsg .project-card__backdrop img { object-position: left 65%; }
 .project-card--chunitora { --project-accent: #facc15; }
 .project-card__category { color: var(--project-accent); font-size: 0.8rem; }
-.project-card h2 { margin: 16px 0 24px; font-size: clamp(1.6rem, 3vw, 2rem); letter-spacing: -0.04em; }
+.project-card h2 { display: flex; align-items: center; gap: 10px; margin: 16px 0 24px; font-size: clamp(1.6rem, 3vw, 2rem); letter-spacing: -0.04em; }
+.project-card__favicon { width: 32px; height: 32px; flex-shrink: 0; object-fit: contain; }
 .project-card__visit { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 8px; padding-block: 8px; font-size: 0.9rem; }
 .project-card__visit:hover { color: var(--project-accent); }
 .project-card__visit:focus-visible { outline: 2px solid var(--project-accent); outline-offset: 4px; border-radius: 4px; }

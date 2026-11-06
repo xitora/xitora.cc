@@ -5,7 +5,8 @@ import "./projects.css";
 const projects = [
   {
     id: "royalsg",
-    image: "/assets/project-royalsg.jpg",
+    image: "/assets/project-royalsg.png",
+    favicon: "/assets/favicon-royalsg.png",
     name: "로얄상구 대여 예약",
     category: "예약 서비스",
     url: "https://royalsg.xitora.cc/",
@@ -21,7 +22,8 @@ const projects = [
   },
   {
     id: "chunitora",
-    image: "/assets/project-chunitora.jpg",
+    image: "/assets/project-chunitora.png",
+    favicon: "/assets/favicon-chunitora.png",
     name: "츄니토라",
     category: "게임 커뮤니티",
     url: "https://chuni.xitora.cc/",
@@ -62,7 +64,7 @@ export default function ProjectsPage({ onNavigate }: { onNavigate: (path: string
               </div>
               <div className="project-card__identity">
                 <span className="project-card__category">0{index + 1} / {project.category}</span>
-                <h2>{project.name}</h2>
+                <h2><img className="project-card__favicon" src={project.favicon} alt="" width={32} height={32} /><span>{project.name}</span></h2>
                 <a className="project-card__visit" href={project.url} target="_blank" rel="noreferrer">
                   사이트 방문 <ArrowUpRight size={18} aria-hidden="true" />
                   <span className="project-card__domain">{project.domain}</span>
